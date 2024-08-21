@@ -5,6 +5,14 @@ App will completely run locally at the bar, so no web features required, unless 
 ## Overview
 The Drinking Counter App is a lightweight, RuneScape-themed application designed to track and display the group's collective "drinking level" in a fun and interactive way. The app consists of two main components: a control panel for registering drink purchases and a display window that shows the group's progress towards leveling up. The goal is to reach level 99, with special events triggered at key milestones.
 
+## Set up guide
+1. Install Node.js if you haven't already. You can download it from Node.js official website.
+2. Make sure you install the required libaries by running the following commands:
+   - npm install electron
+   - npm install sqlite3
+   - npm install canvas-confetti
+3. Run the application using the following command: npm start
+
 ## Architecture
 
 ### 1. **Electron Framework**
