@@ -1,5 +1,4 @@
 const { app, BrowserWindow, ipcMain, Menu, dialog  } = require('electron');
-const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
 
 let mainWindow, controlWindow;
@@ -140,5 +139,6 @@ ipcMain.on('update-xp', (event, xp) => {
 });
 
 function xpToNextLevel(level) {
-    return Math.floor(100 * Math.pow(1.5, level - 1)); // Example scaling formula
+    // TODO better XP scaling
+    return Math.floor(100 * Math.pow(1.5, level - 1));
 }
