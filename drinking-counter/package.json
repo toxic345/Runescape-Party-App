@@ -1,0 +1,17 @@
+{
+  "name": "drinking-counter",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "canvas-confetti": "^1.9.3",
+    "electron": "^32.0.1",
+    "sqlite3": "^5.1.7"
+  }
+}
