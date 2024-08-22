@@ -42,6 +42,7 @@ function calculateXpToNextLevel(level) {
 }
 
 function updateXPDisplay() {
+    console.log(currentLevel, currentXP);
     document.getElementById('level').innerText = `Level: ${currentLevel}`;
     document.getElementById('xp-fill').style.width = `${(currentXP / xpToNextLevel) * 100}%`;
     document.getElementById('xp-display').innerText = `${currentXP} / ${xpToNextLevel} XP`;
