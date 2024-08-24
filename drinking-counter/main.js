@@ -32,6 +32,9 @@ function createWindows() {
     controlWindow.on('closed', () => {
         controlWindow = null;
     });
+
+    mainWindow.webContents.openDevTools(); // TODO remove
+    controlWindow.webContents.openDevTools(); // TODO remove
 }
 
 function createDatabase() {

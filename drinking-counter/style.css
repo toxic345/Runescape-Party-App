@@ -1,12 +1,41 @@
-body {
-    font-family: Arial, sans-serif;
+/*
+TODO: better title & xp text shadows.
+*/
+
+@font-face {
+    font-family: 'Runescape';
+    src: url('./assets/fonts/runescape_uf.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Runescape-small';
+    src: url('./assets/fonts/runescape_small.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body, html {
+    font-family: 'Runescape', sans-serif;
+    color: #ffff00;
+    margin: 0;
+    padding: 0;
+    height: 100%;
     background-color: #3E3529;
-    color: #eee;
     text-align: center;
+    overflow: hidden;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
 }
 
 .container {
-    padding: 20px;
+    padding: 1.4vh;
 }
 
 .image-container {
@@ -18,16 +47,40 @@ body {
     overflow: hidden;
 }
 
-h1 {
-    font-size: 6rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+#level-text-1 {
+    font-family: 'Runescape-small', sans-serif;
+    color: #ffff00;
+    text-shadow: 1.6vh 1.6vh 1px rgba(0, 0, 0, 1);
+    font-size: 25vh;
+    position: absolute;
+    top: 30vh;
+    left: 73vh;
+}
+
+#level-text-2 {
+    font-family: 'Runescape-small', sans-serif;
+    color: #ffff00;
+    text-shadow: 1.6vh 1.6vh 1px rgba(0, 0, 0, 1);
+    font-size: 25vh;
+    position: absolute;
+    bottom: 80px;
+    right: 160px;
+}
+
+.title {
+    font-family: 'Runescape', sans-serif;
+    font-size: 9vh;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+    margin: 2.1vh;
+    margin-bottom: 6.3vh;
 }
 
 #main-image {
-    width: 78%;
-    height: auto;
+    width: auto;
+    height: 60vh;
     max-height: 100%;
     object-fit: contain;
+    display: block;
 }
 
 #xp-bar {
@@ -36,6 +89,7 @@ h1 {
     height: 60px;
     border-radius: 15px;
     overflow: hidden;
+    margin: 20px;
 }
 
 #xp-fill {
@@ -46,16 +100,21 @@ h1 {
 }
 
 #xp-display {
+    font-family: 'Runescape', sans-serif;
     color: #FFFF00;
-    font-size: 3rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-size: 3vh;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+    padding: 20px;
 }
 
 button {
+    font-family: 'Runescape', sans-serif;
     margin: 10px;
+    margin-top: 200px;
     padding: 10px 20px;
-    font-size: 24px;
+    font-size: 4vh;
     cursor: pointer;
-    width: max-content;
-    height: 200px;
+    width: 500px;
+    height: 500px;
+    border-radius: 15px;
 }

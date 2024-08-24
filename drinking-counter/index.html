@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drinking XP Progress</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        <h1>Drinking Level</h1>
-        <div class="image-container">
-            <img id="main-image" src="Assets/level.png" alt="Missing image">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Drinking XP Progress</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="container">
+            <p class="title">Drinking Level</p>
+            <div class="image-container">
+                <img id="main-image" src="assets/level-empty.png" alt="Missing image">
+                <div id="level-text-1">1</div>
+                <div id="level-text-2">1</div>
+            </div>
+            <div id="xp-bar">
+                <div id="xp-fill"></div>
+            </div>
+            <div id="xp-display">0 / 100 XP</div>
         </div>
-        <div id="level">Level: 1</div>
-        <div id="xp-bar">
-            <div id="xp-fill"></div>
-        </div>
-        <div id="xp-display">0 / 100 XP</div>
-    </div>
-    <script src="display.js"></script>
-    <canvas id="confetti-canvas"></canvas>
-</body>
+        <script src="display.js"></script>
+        <canvas id="confetti-canvas"></canvas>
+    </body>
 </html>
