@@ -4,6 +4,9 @@ const sqlite3 = require('sqlite3').verbose();
 let mainWindow, controlWindow;
 let db;
 
+let baseGrowthFactor = 1.048;
+let currentGrowthFactor = 1.048;
+
 function createWindows() {
     mainWindow = new BrowserWindow({
         fullscreen: true,
@@ -33,8 +36,11 @@ function createWindows() {
         controlWindow = null;
     });
 
-    mainWindow.webContents.openDevTools(); // TODO remove
-    controlWindow.webContents.openDevTools(); // TODO remove
+    //mainWindow.webContents.openDevTools(); // TODO remove
+    //controlWindow.webContents.openDevTools(); // TODO remove
+    console.log('App started!!!');
+
+    logTotalXpRequirement();
 }
 
 function createDatabase() {
@@ -46,13 +52,28 @@ function createDatabase() {
             db.run(`CREATE TABLE IF NOT EXISTS progress (
                 id INTEGER PRIMARY KEY,
                 level INTEGER,
+                xp INTEGER,
+                growthFactor REAL
+            )`);
+
+            db.run(`CREATE TABLE IF NOT EXISTS drinks (
+                id INTEGER PRIMARY KEY,
+                type TEXT,
+                count INTEGER,
                 xp INTEGER
             )`);
 
             // Ensure there's a row to store progress
             db.get("SELECT * FROM progress", (err, row) => {
                 if (!row) {
-                    db.run("INSERT INTO progress (level, xp) VALUES (1, 0)");
+                    db.run("INSERT INTO progress (level, xp, growthFactor) VALUES (1, 0, ?)", [baseGrowthFactor]);
+                }
+            });
+
+            db.get("SELECT * FROM drinks", (err, row) => {
+                if (!row) {
+                    db.run("INSERT INTO drinks (type, count, xp) VALUES ('beer', 0, 100)");
+                    db.run("INSERT INTO drinks (type, count, xp) VALUES ('cocktail', 0, 200)");
                 }
             });
         }
@@ -60,7 +81,11 @@ function createDatabase() {
 }
 
 function resetProgress() {
-    db.run("UPDATE progress SET level = 1, xp = 0", () => {
+    
+    db.run("UPDATE drinks SET count = 0, xp = 100 WHERE id = 1", () => {});
+    db.run("UPDATE drinks SET count = 0, xp = 200 WHERE id = 2", () => {});
+
+    db.run("UPDATE progress SET level = 1, xp = 0, growthFactor = ?", [baseGrowthFactor], () => {
         mainWindow.webContents.send('load-progress', 1, 0);
     });
 }
@@ -75,11 +100,24 @@ app.on('ready', () => {
         db.get("SELECT * FROM progress", (err, row) => {
             if (row) {
                 mainWindow.webContents.send('load-progress', row.level, row.xp);
+                mainWindow.webContents.send('settings-updated', row.growthFactor);
             } else {
                 // In case of a new database, initialize it with level 1 and 0 XP
                 mainWindow.webContents.send('load-progress', 1, 0);
+                mainWindow.webContents.send('settings-updated', currentGrowthFactor);
             }
         });
+    });
+
+    controlWindow.webContents.on('did-finish-load', () => {
+        var xpList = [];
+        // Load XP and Level from the database on app startup
+        db.all("SELECT * FROM drinks ORDER BY id ASC", (err, rows) => {
+            rows.forEach(function (row) {
+                xpList.push(row.xp);
+            })
+        });
+        controlWindow.webContents.send('settings-updated', xpList);
     });
 
     const menu = Menu.buildFromTemplate([
@@ -103,6 +141,22 @@ app.on('ready', () => {
                         }
                     }
                 },
+                {
+                    label: 'Settings',
+                    click() {
+                        const settingsWindow = new BrowserWindow({
+                            width: 400,
+                            height: 400,
+                            frame: false,
+                            webPreferences: {
+                              nodeIntegration: true,
+                              contextIsolation: false,
+                            },
+                          });
+                        
+                          settingsWindow.loadFile('settings.html');
+                    }
+                },
                 { role: 'quit' }
             ]
         }
@@ -123,8 +177,10 @@ app.on('activate', () => {
 });
 
 ipcMain.on('update-xp', (event, xp) => {
+    console.log('update xp');
     db.get("SELECT * FROM progress", (err, row) => {
         if (row) {
+            console.log(row);
             let newXP = row.xp + xp;
             let newLevel = row.level;
 
@@ -134,14 +190,64 @@ ipcMain.on('update-xp', (event, xp) => {
                 newLevel++;
             }
 
-            db.run("UPDATE progress SET level = ?, xp = ?", [newLevel, newXP], () => {
-                mainWindow.webContents.send('update-xp', newLevel, newXP);
-            });
+            if (newLevel < 100) {
+                db.run("UPDATE progress SET level = ?, xp = ?", [newLevel, newXP], () => {
+                    console.log('sending update');
+                    mainWindow.webContents.send('update-xp', newLevel, newXP);
+                });
+            }
         }
     });
 });
 
+ipcMain.on('log', (event, message) => {
+    console.log(message);
+});
+
+ipcMain.on('level-up', (event) => {
+    db.get("SELECT * FROM progress", (err, row) => {
+        if (row) {
+            console.log(row);
+            let newLevel = row.level+1;
+            let newXP = xpToNextLevel(newLevel);
+
+            if (newLevel < 100) {
+                db.run("UPDATE progress SET level = ?, xp = ?", [newLevel, newXP], () => {
+                    console.log('sending update');
+                    mainWindow.webContents.send('update-xp', newLevel, newXP);
+                });
+            }
+        }
+    });
+});
+
+ipcMain.on('drink-bought', (event, drinkId) => {
+    db.get("SELECT * FROM drinks WHERE id = ?", [drinkId], (err, row) => {
+        if (row) {
+            console.log(row);
+            db.run("UPDATE drinks SET count = ? WHERE id = ?", [row.count+1, drinkId], () => {});
+        }
+    });
+});
+
+// Experience function with a growing factor (geometric progression)
 function xpToNextLevel(level) {
-    // TODO better XP scaling
-    return Math.floor(100 * Math.pow(1.5, level - 1));
+    return Math.floor(50 * Math.pow(currentGrowthFactor, level - 1));
 }
+
+function logTotalXpRequirement() {
+    let cumulativeXP = 0;
+    for (let level = 1; level <= 99; level++) {
+      cumulativeXP += xpToNextLevel(level);
+    }
+    console.log('total xp needed: ' + cumulativeXP);
+    return cumulativeXP;
+}
+
+// Listen for settings changes and update the global variables
+ipcMain.on('update-settings', (event, newXpList, newGrowthFactor) => {
+    currentGrowthFactor = newGrowthFactor;
+
+    mainWindow.webContents.send('settings-updated', growthFactor);
+    controlWindow.webContents.send('settings-updated', newXpList);
+});
