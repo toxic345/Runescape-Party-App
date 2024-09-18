@@ -3,8 +3,8 @@ const confetti = require('canvas-confetti');
 
 let currentXP = 0;
 let currentLevel = 1;
-let xpToNextLevel = 100;
-let growthFactor = 1.048;
+let xpToNextLevel = 50;
+let growthFactor = 1.044;
 
 let myCanvas = document.getElementById('confetti-canvas');
 let myConfetti = confetti.create(myCanvas, {

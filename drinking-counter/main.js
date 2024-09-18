@@ -1,11 +1,11 @@
 const { app, BrowserWindow, ipcMain, Menu, dialog  } = require('electron');
 const sqlite3 = require('sqlite3').verbose();
 
-let mainWindow, controlWindow;
+let mainWindow, controlWindow, settingsWindow;
 let db;
 
-let baseGrowthFactor = 1.048;
-let currentGrowthFactor = 1.048;
+let baseGrowthFactor = 1.044;
+let currentGrowthFactor = 1.044;
 
 function createWindows() {
     mainWindow = new BrowserWindow({
@@ -88,6 +88,11 @@ function resetProgress() {
     db.run("UPDATE progress SET level = 1, xp = 0, growthFactor = ?", [baseGrowthFactor], () => {
         mainWindow.webContents.send('load-progress', 1, 0);
     });
+
+    currentGrowthFactor = baseGrowthFactor;
+
+    mainWindow.webContents.send('settings-updated', currentGrowthFactor);
+    controlWindow.webContents.send('settings-updated', [100, 200]);
 }
 
 app.on('ready', () => {
@@ -111,13 +116,16 @@ app.on('ready', () => {
 
     controlWindow.webContents.on('did-finish-load', () => {
         var xpList = [];
+        console.log("Loading drink xp for each drink: ");
         // Load XP and Level from the database on app startup
         db.all("SELECT * FROM drinks ORDER BY id ASC", (err, rows) => {
             rows.forEach(function (row) {
+                console.log(row);
                 xpList.push(row.xp);
             })
+            console.log(xpList);
+            controlWindow.webContents.send('settings-updated', xpList);
         });
-        controlWindow.webContents.send('settings-updated', xpList);
     });
 
     const menu = Menu.buildFromTemplate([
@@ -144,7 +152,7 @@ app.on('ready', () => {
                 {
                     label: 'Settings',
                     click() {
-                        const settingsWindow = new BrowserWindow({
+                        settingsWindow = new BrowserWindow({
                             width: 400,
                             height: 400,
                             frame: false,
@@ -246,8 +254,11 @@ function logTotalXpRequirement() {
 
 // Listen for settings changes and update the global variables
 ipcMain.on('update-settings', (event, newXpList, newGrowthFactor) => {
+    console.log("received updated settings: ? & ?", [newXpList, newGrowthFactor]);
+    settingsWindow.close();
+
     currentGrowthFactor = newGrowthFactor;
 
-    mainWindow.webContents.send('settings-updated', growthFactor);
+    mainWindow.webContents.send('settings-updated', currentGrowthFactor);
     controlWindow.webContents.send('settings-updated', newXpList);
 });

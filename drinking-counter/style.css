@@ -65,10 +65,10 @@ body {
 
 .title {
     font-family: 'Runescape', sans-serif;
-    font-size: 9vh;
+    font-size: 12vh;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
     margin: 2.1vh;
-    margin-bottom: 6.3vh;
+    margin-bottom: 2vh;
 }
 
 #main-image {
@@ -85,7 +85,7 @@ body {
     height: 60px;
     border-radius: 15px;
     overflow: hidden;
-    margin: 20px;
+    margin-top: 4vh;
 }
 
 #xp-fill {
@@ -98,9 +98,9 @@ body {
 #xp-display {
     font-family: 'Runescape', sans-serif;
     color: #FFFF00;
-    font-size: 3vh;
+    font-size: 4vh;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
-    padding: 20px;
+    padding: 2vh;
 }
 
 button {
