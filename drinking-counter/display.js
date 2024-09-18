@@ -41,7 +41,7 @@ function randomInRange(min, max) {
 
 function launchFireworks() {
     
-    var duration = 3 * 1000;
+    var duration = 6 * 1000;
     var animationEnd = Date.now() + duration;
     
     var interval = setInterval(function() {
@@ -63,6 +63,7 @@ function launchFireworks() {
             startVelocity: 30,
             spread: 360,
             ticks: 60,
+            scalar: 2,
             zIndex: 0
         });
         myConfetti({
@@ -75,9 +76,18 @@ function launchFireworks() {
             startVelocity: 30,
             spread: 360,
             ticks: 60,
+            scalar: 2,
             zIndex: 0
         });
     }, 250);
+
+    var levelUpSound;
+    if (currentLevel < 98) {
+        levelUpSound = new Audio('assets/Level_up.ogg');  // specify the path to your sound file
+    } else {
+        levelUpSound = new Audio('assets/Level_99_Fireworks.ogg');  // specify the path to your sound file
+    }
+    levelUpSound.play();
 }
 
 function calculateXpToNextLevel(level) {
