@@ -3,15 +3,41 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Drinking level application for RSBOIT",
   "dependencies": {
     "canvas-confetti": "^1.9.3",
-    "electron": "^32.0.1",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "electron": "^25.3.0",
+    "electron-builder": "^24.4.0"
+  },
+  "build": {
+    "appId": "com.runescape.drinking.level",
+    "productName": "RSBOIT Drinking Level",
+    "copyright": "Copyright © 2024 Mathias Annot",
+    "directories": {
+      "buildResources": "assets"
+    },
+    "files": [
+      "main.js",
+      "index.html",
+      "settings.html",
+      "control.html",
+      "control.js",
+      "display.js",
+      "style.css",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    }
   }
 }
