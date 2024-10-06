@@ -41,7 +41,7 @@ function randomInRange(min, max) {
 
 function launchFireworks() {
     
-    var duration = 6 * 1000;
+    var duration = 4 * 1000;
     var animationEnd = Date.now() + duration;
     
     var interval = setInterval(function() {
@@ -84,8 +84,10 @@ function launchFireworks() {
     var levelUpSound;
     if (currentLevel < 98) {
         levelUpSound = new Audio('assets/Level_up.ogg');  // specify the path to your sound file
+        levelUpSound.volume = 1;
     } else {
         levelUpSound = new Audio('assets/Level_99_Fireworks.ogg');  // specify the path to your sound file
+        levelUpSound.volume = 0.05;
     }
     levelUpSound.play();
 }

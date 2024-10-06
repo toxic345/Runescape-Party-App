@@ -1,0 +1,107 @@
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+/*.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}*/
+
+@font-face {
+  font-family: 'Runescape';
+  src: url('../../assets/fonts/runescape_uf.woff') format('woff');
+  /*font-weight: normal;
+  font-style: normal;*/
+}
+
+@font-face {
+  font-family: 'Runescape-small';
+  src: url('../../assets/fonts/runescape_small.woff') format('woff');
+  /*font-weight: normal;
+  font-style: normal;*/
+}
+
+@font-face {
+  font-family: 'Runescape-chat';
+  src: url('../../assets/fonts/RuneScape-Chat-07.ttf') format('woff');
+  /*font-weight: normal;
+  font-style: normal;*/
+}
+
+/* Ensure the whole chat area uses the available screen space */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Runescape-chat', sans-serif;
+  color: #0000FF;
+  font-size: 8vh;
+  /*background-color: #3E3529;*/
+}
+
+#system-text {
+  color: #000000;
+}
+
+/* Chat container takes the full screen height */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+}
+
+/* Chat messages section will grow and be scrollable */
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto; /* Makes this section scrollable */
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Fixed chat input at the bottom */
+.chat-input-container {
+  display: flex;
+  padding: 10px;
+  background-color: #e0e0e0;
+}
+
+.chat-message {
+  margin: 10px;
+  overflow-wrap: break-word;
+}
+
+#message-input {
+  flex-grow: 1; /* Makes the input take as much space as possible */
+  padding: 5px;
+}
+
+#send-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+}
