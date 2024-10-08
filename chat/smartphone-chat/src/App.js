@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Component } from 'react';
 import io from 'socket.io-client';
 
 const socket = io('http://localhost:3001');  // Connect to backend
@@ -10,20 +10,15 @@ function App() {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [loggedIn, setLoggedIn] = useState(false);
-    const [messageSent, setMessageSent] = useState(false);
-
+    const [error, setError] = useState('');
     const chatBoxRef = useRef(null);  // Reference to the chat box
+    const messageRef = useRef(null);
+
+    const usernameRegex = /^[a-zA-Z0-9- ]{1,12}$/;
 
     useEffect(() => {
         socket.on('load-messages', (loadedMessages) => {
             setMessages(loadedMessages);
-
-            // Scroll to the bottom after messages are loaded
-            setTimeout(() => {
-              if (chatBoxRef.current) {
-                  chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-              }
-            }, 3000); // Small delay to ensure the DOM is updated
         });
 
         socket.off('chat-message');
@@ -43,35 +38,60 @@ function App() {
               }
             });
 
-            if (messageSent) {
-              setMessageSent(false);
-              /*const chatBox = document.getElementById('chat-box');
-              chatBox.scrollTop = chatBox.scrollHeight;*/
-            }
+            setTimeout(() => {
+              if (chatBoxRef.current && messageRef.current) {
+                chatBoxRef.current.scrollTop = Math.min(chatBoxRef.current.scrollHeight, chatBoxRef.current.scrollTop + getChatElementHeight());
+              }
+            }, 100); // Small delay to ensure the DOM is updated
         });
     }, []);
-
-    // Scroll to the bottom whenever a new message is added
-    useEffect(() => {
-      if (chatBoxRef.current) {
-          chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-      }
-    }, [messages]);
 
     const sendMessage = () => {
         if (message.trim()) {
           const chatMessage = { username, message };
           socket.emit('chat-message', chatMessage);
           setMessage('');  // Clear the input after sending
-
-          setMessageSent(true);
-          // Scroll to the bottom
-          setTimeout(() => {
-            if (chatBoxRef.current) {
-                chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-            }
-          }, 500); // Small delay to ensure the DOM is updated
         }
+    };
+
+    const handleLogin = () => {
+      if (validateUsername()) {
+
+        setLoggedIn(true);
+        
+        setTimeout(() => {
+          scrollDown();
+        }, 500); // Small delay to ensure the DOM is updated
+      }
+    };
+
+    const validateUsername = () => {
+      if (!usernameRegex.test(username) || !username.trim()) {
+          setError('Username must be 1-12 characters long and contain only letters, numbers, dashes (-), or spaces.');
+          return false;
+      }
+      setError('');
+      return true;
+    };
+
+    const scrollDown = () => {
+      if (chatBoxRef.current) {
+        chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+      }
+    };
+
+    const getChatElementHeight = () => {
+      
+      var totalHeight = 0;
+      
+      if (messageRef.current) {
+        const style = window.getComputedStyle(messageRef.current);
+        const marginTop = parseFloat(style.marginTop);
+        const marginBottom = parseFloat(style.marginBottom);
+        totalHeight = messageRef.current.offsetHeight + marginTop + marginBottom;
+      }
+      
+      return totalHeight;
     };
 
     return (
@@ -81,19 +101,21 @@ function App() {
                     <h2>Enter Your Username</h2>
                     <input
                         type="text"
+                        maxLength="12"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         onKeyUp={(e) => {
-                          if (e.key === 'Enter') setLoggedIn(true);
+                          if (e.key === 'Enter') handleLogin(true);
                         }}
                     />
-                    <button onClick={() => setLoggedIn(true)}>Join Chat</button>
+                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    <button onClick={handleLogin}>Join Chat</button>
                 </div>
             ) : (
                 <div class="chat-container">
                     <div class="chat-messages" id="chat-box" ref={chatBoxRef}>
                         {messages.map((msg, index) => (
-                            <div key={index} class="chat-message">
+                            <div key={index} class="chat-message" ref={index === messages.length - 1 ? messageRef : null}>
                                 <span id='system-text'>{msg.username}:</span> {msg.message}
                             </div>
                         ))}

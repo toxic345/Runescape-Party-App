@@ -1,11 +1,12 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
 const socket = io('http://localhost:3001');
 
 function CentralChatDisplay() {
     const [messages, setMessages] = useState([]);
+    const chatBoxRef = useRef(null);  // Reference to the chat box
 
     useEffect(() => {
         socket.on('load-messages', (loadedMessages) => {
@@ -18,13 +19,18 @@ function CentralChatDisplay() {
         });
     }, []);
 
+    useEffect(() => {
+        if (chatBoxRef.current) {
+            chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+        }
+    }, [messages]);
+
     return (
-        <div className="central-chat-display">
-            <h1>Party Chat Display</h1>
-            <div className="chat-box">
+        <div class="chat-container">
+            <div class="chat-messages" id="chat-box" ref={chatBoxRef}>
                 {messages.map((msg, index) => (
-                    <div key={index}>
-                        <strong>{msg.username}:</strong> {msg.message}
+                    <div key={index} class="chat-message">
+                        <span id='system-text'>{msg.username}:</span> {msg.message}
                     </div>
                 ))}
             </div>
