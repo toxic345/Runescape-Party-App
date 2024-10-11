@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 
 const socket = io('http://localhost:3001');  // Connect to backend
 
-// TODO Make sure you can't log in with empty name
+// TODO Chat badges & colors?
 function App() {
     const [username, setUsername] = useState('');
     const [message, setMessage] = useState('');
