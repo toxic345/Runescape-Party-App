@@ -58,3 +58,8 @@ The Drinking Counter App is a lightweight, RuneScape-themed application designed
   - Highscores
 - Random events?
   - Drink x amount of drinks for an xp boost
+
+# Chat
+## Set-up guide
+- Run the server using the following command: node server.js
+- Run a client using the following command: npm start
