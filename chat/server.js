@@ -12,10 +12,17 @@ const io = socketIo(server, {
     },
 });
 
-// Initialize SQLite connection using Sequelize
-const sequelize = new Sequelize({
-    dialect: 'sqlite',
-    storage: './chatdb.sqlite', // This file will store the chat data
+// Initialize PostgreSQL connection using Sequelize
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+    dialect: 'postgres',
+    protocol: 'postgres',
+    logging: false, // Disable logging, remove or set to true to debug SQL queries
+    dialectOptions: {
+        ssl: {
+            require: true, // Enforce SSL connection if using Render/Postgres
+            rejectUnauthorized: false, // Disable rejecting self-signed certificates
+        },
+    },
 });
 
 // Define a Message model
@@ -40,6 +47,8 @@ const Message = sequelize.define('Message', {
 // Sync database
 sequelize.sync().then(() => {
     console.log('Database synchronized');
+}).catch((err) => {
+    console.error('Error synchronizing the database:', err);
 });
 
 const PORT = process.env.PORT || 3001;
@@ -47,24 +56,32 @@ const PORT = process.env.PORT || 3001;
 io.on('connection', async (socket) => {
     console.log('A user connected');
 
-    // Fetch existing messages from the database, ordered by createdAt in ascending order
-    const messages = await Message.findAll({
-        order: [['createdAt', 'ASC']]  // Order by timestamp (oldest first)
-    });
+    try {
+        // Fetch existing messages from the database, ordered by createdAt in ascending order
+        const messages = await Message.findAll({
+            order: [['createdAt', 'ASC']],  // Order by timestamp (oldest first)
+        });
 
-    // Send the messages to the connected client
-    socket.emit('load-messages', messages);
+        // Send the messages to the connected client
+        socket.emit('load-messages', messages);
+    } catch (error) {
+        console.error('Error loading messages:', error);
+    }
 
     socket.on('chat-message', async (data) => {
         console.log('Received a chat message: ', data.message);
-        // Store the new message in the database with the current timestamp
-        const newMessage = await Message.create({
-            username: data.username,
-            message: data.message,
-        });
+        try {
+            // Store the new message in the database with the current timestamp
+            const newMessage = await Message.create({
+                username: data.username,
+                message: data.message,
+            });
 
-        // Broadcast the new message to all connected clients
-        io.emit('chat-message', newMessage);
+            // Broadcast the new message to all connected clients
+            io.emit('chat-message', newMessage);
+        } catch (error) {
+            console.error('Error saving message:', error);
+        }
     });
 
     socket.on('disconnect', () => {

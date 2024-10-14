@@ -112,15 +112,15 @@ function App() {
                     <button onClick={handleLogin}>Join Chat</button>
                 </div>
             ) : (
-                <div class="chat-container">
-                    <div class="chat-messages" id="chat-box" ref={chatBoxRef}>
+                <div className="chat-container">
+                    <div className="chat-messages" id="chat-box" ref={chatBoxRef}>
                         {messages.map((msg, index) => (
-                            <div key={index} class="chat-message" ref={index === messages.length - 1 ? messageRef : null}>
-                                <span class='system-text'>{msg.username}:</span> {msg.message}
+                            <div key={index} className="chat-message" ref={index === messages.length - 1 ? messageRef : null}>
+                                <span className='system-text'>{msg.username}:</span> {msg.message}
                             </div>
                         ))}
                     </div>
-                    <div class="chat-input-container">
+                    <div className="chat-input-container">
                       <input
                           id="message-input"
                           placeholder="Type your message"
