@@ -65,5 +65,6 @@ The Drinking Counter App is a lightweight, RuneScape-themed application designed
 - Run a client using the following command: npm start
 
 ## Hosted at: 
-- https://vercel.com/toxic345s-projects/runescape-party-app
-- https://dashboard.render.com/web/srv-cs6o9qa3esus73b6bsbg/deploys/dep-cs6o9qq3esus73b6bslg
+- https://runescape-party-chat-backend.onrender.com
+- https://runescape-party-chat-mobile.onrender.com
+- https://runescape-party-chat-central.onrender.com
