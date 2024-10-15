@@ -125,7 +125,7 @@ p {
 .chat-message {
   margin: 10px;
   overflow-wrap: break-word;
-  display: "flex";
+  display: flex;
   white-space: pre-wrap;
   box-sizing: border-box;
 }
@@ -133,7 +133,7 @@ p {
 #input-message {
   margin: 10px;
   overflow-wrap: break-word;
-  display: "flex";
+  display: flex;
   white-space: pre-wrap;
   box-sizing: border-box;
 }
