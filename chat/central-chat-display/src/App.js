@@ -98,6 +98,7 @@ function CentralChatDisplay() {
 
   return (
     <div className="chat-container">
+      <div className="chat-top"/>
       <div className="chat-messages" id="chat-box" ref={chatBoxRef}>
         {messages.map((msg, index) => (
           <div key={index} className="chat-message" style={{ display: "flex" }}>

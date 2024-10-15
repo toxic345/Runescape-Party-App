@@ -81,8 +81,8 @@ p {
 }
 
 #chat-box {
-  background-image: url("../../assets/Chat_Interface_cropped-top.png");
-  background-size: cover;
+  background-image: url("../../assets/Chat_Interface_cropped_border-middle.png");
+  background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
   overflow: hidden;
@@ -93,22 +93,33 @@ p {
 .chat-messages {
   flex-grow: 1;
   overflow-y: auto; /* Makes this section scrollable */
-  padding: 10px;
   box-sizing: border-box;
+  padding-left: 12px;
+  padding-right: 6vh;
+}
+
+/* Fixed chat input at the bottom */
+.chat-top {
+  display: flex;
+  background-image: url("../../assets/Chat_Interface_cropped_border-top.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  padding: 1vh;
 }
 
 /* Fixed chat input at the bottom */
 .chat-input-container {
   display: flex;
-  padding: 10px;
-  background-image: url("../../assets/Chat_Interface_cropped-bottom.png");
-  background-size: cover;
+  background-image: url("../../assets/Chat_Interface_cropped_border-bottom.png");
+  background-size: 100% 100%;
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
-  border-top-style: solid;
-  border-top-color: #807660;
-  border-top-width: 0.8vh;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 4vh;
 }
 
 .chat-message {
@@ -116,14 +127,13 @@ p {
   overflow-wrap: break-word;
   display: "flex";
   white-space: pre-wrap;
+  box-sizing: border-box;
 }
 
-#message-input {
-  flex-grow: 1; /* Makes the input take as much space as possible */
-  padding: 5px;
-}
-
-#send-button {
-  margin-left: 10px;
-  padding: 5px 10px;
+#input-message {
+  margin: 10px;
+  overflow-wrap: break-word;
+  display: "flex";
+  white-space: pre-wrap;
+  box-sizing: border-box;
 }
