@@ -124,10 +124,13 @@ p {
 
 .chat-message {
   margin: 10px;
-  overflow-wrap: break-word;
   display: flex;
   white-space: pre-wrap;
   box-sizing: border-box;
+}
+
+.message {
+  overflow-wrap: break-word;
 }
 
 #input-message {
