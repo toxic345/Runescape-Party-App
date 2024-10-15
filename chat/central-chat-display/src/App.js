@@ -64,7 +64,7 @@ function CentralChatDisplay() {
 
       setTimeout(() => {
         typeWriter(index + 1, currentMessage);
-      }, 100);
+      }, 75);
     } else {
       processing.current = false;
 
