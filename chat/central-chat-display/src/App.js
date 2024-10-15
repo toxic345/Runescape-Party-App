@@ -6,7 +6,6 @@ const socket = io("https://runescape-party-chat-backend.onrender.com/");
 
 function CentralChatDisplay() {
   const [messages, setMessages] = useState([]);
-  //const [processingMessage, setProcessingMessage] = useState("");
 
   const processing = useRef(false);
   const messageBuffer = useRef([]);
