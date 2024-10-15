@@ -94,8 +94,8 @@ p {
   flex-grow: 1;
   overflow-y: auto; /* Makes this section scrollable */
   box-sizing: border-box;
-  padding-left: 12px;
-  padding-right: 6vh;
+  padding-left: 64px;
+  padding-right: 160px;
 }
 
 /* Fixed chat input at the bottom */
@@ -117,8 +117,8 @@ p {
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
-  padding-left: 12px;
-  padding-right: 12px;
+  padding-left: 64px;
+  padding-right: 64px;
   padding-bottom: 4vh;
 }
 
