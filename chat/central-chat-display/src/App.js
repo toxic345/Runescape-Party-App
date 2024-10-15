@@ -101,14 +101,14 @@ function CentralChatDisplay() {
       <div className="chat-top"/>
       <div className="chat-messages" id="chat-box" ref={chatBoxRef}>
         {messages.map((msg, index) => (
-          <div key={index} className="chat-message" style={{ display: "flex" }}>
+          <div key={index} className="chat-message">
             <div className="system-text">{msg.username}: </div>
-            <div> {msg.message}</div>
+            <div>{msg.message}</div>
           </div>
         ))}
       </div>
       <div className="chat-input-container">
-        <div id="input-message" style={{ display: "flex" }}>
+        <div id="input-message">
           <div className="system-text" id="userName">
             Username:{" "}
           </div>

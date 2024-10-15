@@ -60,7 +60,7 @@ html, body {
   margin: 0;
   font-family: 'Runescape-chat', sans-serif;
   color: #0000FF;
-  font-size: 8vh;
+  font-size: 3vh;
   /*background-color: #3E3529;*/
 }
 
@@ -94,6 +94,14 @@ html, body {
 .chat-message {
   margin: 10px;
   overflow-wrap: break-word;
+}
+
+#chat-box {
+  background-image: url("../../assets/Chat-Texture.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
 }
 
 #message-input {

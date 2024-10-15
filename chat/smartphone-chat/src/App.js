@@ -116,7 +116,8 @@ function App() {
                     <div className="chat-messages" id="chat-box" ref={chatBoxRef}>
                         {messages.map((msg, index) => (
                             <div key={index} className="chat-message" ref={index === messages.length - 1 ? messageRef : null}>
-                                <span className='system-text'>{msg.username}:</span> {msg.message}
+                                <div className="system-text">{msg.username}: </div>
+                                <div>{msg.message}</div>
                             </div>
                         ))}
                     </div>
