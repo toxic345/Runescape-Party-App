@@ -13,7 +13,7 @@ const io = socketIo(server, {
 });
 
 // Initialize PostgreSQL connection using Sequelize
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
+const sequelize = new Sequelize(process.env.DATABASE_URL/*"postgresql://runescape_party_chat_db_user:1j7rvnCJfIgBVw8hgwnlpjEfy3M4av3O@dpg-cs6qd408fa8c7390j37g-a.frankfurt-postgres.render.com/runescape_party_chat_db"*/, {
     dialect: 'postgres',
     protocol: 'postgres',
     logging: false, // Disable logging, remove or set to true to debug SQL queries
@@ -35,14 +35,14 @@ const Message = sequelize.define('Message', {
         type: DataTypes.TEXT,
         allowNull: false,
     },
-    /*colorEffect: {
+    colorEffect: {
         type: DataTypes.TEXT,
         allowNull: false,
     },
     textEffect: {
         type: DataTypes.TEXT,
         allowNull: false,
-    },*/
+    },
     createdAt: {  // Timestamp when the message was created
         type: DataTypes.DATE,
         allowNull: false,
@@ -52,24 +52,35 @@ const Message = sequelize.define('Message', {
     timestamps: false  // Disable 'updatedAt' field, but keep 'createdAt'
 });
 
-// Sync database
-sequelize.sync().then(() => {
-    console.log('Database synchronized');
+sequelize.sync({ alter: true }).then(() => {
+    console.log('Database schema updated successfully.');
 }).catch((err) => {
-    console.error('Error synchronizing the database:', err);
+    console.error('Error syncing database:', err);
+});
+
+// Clear Database Endpoint
+app.delete('/clear-messages', async (req, res) => {
+    try {
+        // Destroys all records in the Message table
+        await Message.destroy({ where: {}, truncate: true });
+        res.status(200).send('All messages cleared successfully.');
+    } catch (error) {
+        console.error('Error clearing messages:', error);
+        res.status(500).send('Error clearing messages.');
+    }
 });
 
 const PORT = process.env.PORT || 3001;
 
 io.on('connection', async (socket) => {
     console.log('A user connected');
-
     try {
         // Fetch existing messages from the database, ordered by createdAt in ascending order
         const messages = await Message.findAll({
             order: [['createdAt', 'ASC']],  // Order by timestamp (oldest first)
         });
 
+        console.log(messages.length);
         // Send the messages to the connected client
         socket.emit('load-messages', messages);
     } catch (error) {
@@ -77,14 +88,14 @@ io.on('connection', async (socket) => {
     }
 
     socket.on('chat-message', async (data) => {
-        console.log('Received a chat message: ', data.message);
+        console.log('Received a chat message: ', data.messageWithoutEffects);
         try {
             // Store the new message in the database with the current timestamp
             const newMessage = await Message.create({
                 username: data.username,
-                message: data.message,
-                /*colorEffect: data.colorEffect,
-                textEffect: data.textEffect*/
+                message: data.messageWithoutEffects,
+                colorEffect: data.colorEffect,
+                textEffect: data.textEffect
             });
 
             // Broadcast the new message to all connected clients

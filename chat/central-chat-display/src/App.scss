@@ -106,7 +106,7 @@ p {
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
-  padding: 1vh;
+  padding: 2vh;
 }
 
 /* Fixed chat input at the bottom */
@@ -123,7 +123,7 @@ p {
 }
 
 .chat-message {
-  margin: 10px;
+  margin: 0px;
   display: flex;
   white-space: pre-wrap;
   box-sizing: border-box;
@@ -139,4 +139,176 @@ p {
   display: flex;
   white-space: pre-wrap;
   box-sizing: border-box;
+}
+
+.red {
+  color: #FF0000;
+}
+
+.yellow {
+  color: #FFFF00;
+}
+
+.purple {
+  color: #FF00FF;
+}
+
+.cyan {
+  color: #00FFFF;
+}
+
+.white {
+  color: #FFFFFF;
+}
+
+.green {
+  color: #00FF00;
+}
+
+@keyframes flash1 {
+  0%{
+    color: #FF0000;
+  }
+  50%{
+    color: #ff0;
+  }
+}
+
+@keyframes flash2 {
+  0%{
+    color: #0000FF;
+  }
+  50%{
+    color: #00FFFF;
+  }
+}
+
+@keyframes flash3 {
+  0%{
+    color: #00B000;
+  }
+  50%{
+    color: #80FF80;
+  }
+}
+
+@for $i from 1 through 3 {
+  .flash#{$i} {
+  animation: flash#{$i} 0.45s steps(1, end) infinite;
+  }
+}
+
+@keyframes glow1 {
+  0%{
+    color: #FF0000;
+  } 33%{
+    color: #00B000;
+  } 66% {
+    color: #0000FF;
+  } 100% {
+    color: #FF0000;
+  }
+}
+
+@keyframes glow2 {
+  0%{
+    color: #FF0000;
+  } 33%{
+    color: #800080;
+  } 66% {
+    color: #0000FF;
+  } 100% {
+    color: #FF0000;
+  }
+}
+
+@keyframes glow3 {
+  0%{
+    color: #FFFFFF;
+  } 25%{
+    color: #00B000;
+  } 50% {
+    color: #FFFFFF;
+  } 67.5%{
+    color: #00FFFF;
+  } 75% {
+    color: #0000FF;
+  } 100% {
+    color: #FFFFFF;
+  }
+}
+
+@for $i from 1 through 3 {
+  .glow#{$i} {
+  animation: glow#{$i} 3s linear infinite;
+  }
+}
+
+$length: 50;
+
+@keyframes wave {
+  0% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(5px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@mixin wave($length) {
+  @for $i from 1 through $length {
+    .char#{$i} {
+      display: inline-block;
+      animation: wave 0.66s linear infinite;
+      animation-delay: #{$i * -50}ms; // Corrected the delay interpolation
+    }
+  }
+}
+
+.wave {
+  @include wave($length);
+}
+
+@keyframes scroll {
+  0% {
+    text-indent: 500px;
+  }
+  100% {
+    text-indent: -20em;
+  }
+}
+
+.scroll {
+  display: inline-block;
+  white-space: nowrap;
+  animation: scroll 8s infinite linear;
+  overflow: hidden;
+}
+
+@keyframes slide {
+  0%{
+    top: -1.5em;
+  }
+  10%,
+  90%{
+    top: 0;
+  }
+  100% {
+    top: 1.5em;
+  }
+}
+
+.slide {
+  animation: slide 3s linear;
+  position:relative;
+  top: 0em;
 }

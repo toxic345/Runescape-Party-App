@@ -1,10 +1,11 @@
-import './App.css';
+import './App.scss';
 import React, { useState, useEffect, useRef, Component } from 'react';
 import io from 'socket.io-client';
 
 const socket = io('https://runescape-party-chat-backend.onrender.com/');  // Connect to backend
+//const socket = io('localhost:3001');
 
-// TODO Chat badges & colors?
+// TODO Chat badges?
 function App() {
     const [username, setUsername] = useState('');
     const [message, setMessage] = useState('');
@@ -23,6 +24,7 @@ function App() {
 
         socket.off('chat-message');
         socket.on('chat-message', (newMessage) => {
+          console.log(newMessage.message + " " + newMessage.textEffect + " " + newMessage.colorEffect);
             setMessages((prevMessages) => {
               // Check if the message with the same id exists in the array
               const index = prevMessages.findIndex((msg) => msg.id === newMessage.id);
@@ -48,45 +50,48 @@ function App() {
 
     const sendMessage = () => {
         if (message.trim()) {
-          /*const colorEffect = checkColorEffect();
-          const textEffect = checkTextEffect();*/
-            const chatMessage = { username, message };
-          //const chatMessage = { username, message, colorEffect, textEffect};
+          var messageWithoutEffects = message;
+          const colorEffect = checkColorEffect(messageWithoutEffects);
+          if (colorEffect !== "none") {
+            messageWithoutEffects = messageWithoutEffects.substring(colorEffect.length + 1);
+          }
+          const textEffect = checkTextEffect(messageWithoutEffects);
+          if (textEffect !== "none") {
+            messageWithoutEffects = messageWithoutEffects.substring(textEffect.length + 1);
+          }
+          const chatMessage = { username, messageWithoutEffects, colorEffect, textEffect};
           socket.emit('chat-message', chatMessage);
           setMessage('');  // Clear the input after sending
         }
     };
 
-    const checkColorEffect = () => {
+    const checkColorEffect = (messageWithoutEffects) => {
 
       var effect = "None";
-      if (message.startsWith("red:")) {
+      if (messageWithoutEffects.startsWith("red:")) {
         effect = "red";
-        setMessage(message.substring(4));
-      } else if (message.startsWith("yellow:")) {
+      } else if (messageWithoutEffects.startsWith("yellow:")) {
         effect = "yellow";
-        setMessage(message.substring(7));
-      } else if (message.startsWith("green:")) {
+      } else if (messageWithoutEffects.startsWith("green:")) {
         effect = "green";
-        setMessage(message.substring(6));
-      } else if (message.startsWith("cyan:")) {
+      } else if (messageWithoutEffects.startsWith("cyan:")) {
         effect = "cyan";
-        setMessage(message.substring(5));
-      } else if (message.startsWith("purple:")) {
+      } else if (messageWithoutEffects.startsWith("purple:")) {
         effect = "purple";
-        setMessage(message.substring(7));
-      } else if (message.startsWith("white:")) {
+      } else if (messageWithoutEffects.startsWith("white:")) {
         effect = "white";
-        setMessage(message.substring(6));
-      } else if (message.startsWith("flash1:")) {
+      } else if (messageWithoutEffects.startsWith("flash1:")) {
         effect = "flash1";
-        setMessage(message.substring(7));
-      } else if (message.startsWith("flash2:")) {
+      } else if (messageWithoutEffects.startsWith("flash2:")) {
         effect = "flash2";
-        setMessage(message.substring(7));
-      } else if (message.startsWith("flash3:")) {
+      } else if (messageWithoutEffects.startsWith("flash3:")) {
         effect = "flash3";
-        setMessage(message.substring(7));
+      } else if (messageWithoutEffects.startsWith("glow1:")) {
+        effect = "glow1";
+      } else if (messageWithoutEffects.startsWith("glow2:")) {
+        effect = "glow2";
+      } else if (messageWithoutEffects.startsWith("glow3:")) {
+        effect = "glow3";
       } else {
         effect = "none";
       }
@@ -94,24 +99,19 @@ function App() {
       return effect;
     };
 
-    const checkTextEffect = () => {
+    const checkTextEffect = (messageWithoutEffects) => {
 
       var effect;
-      if (message.startsWith("wave:")) {
+      if (messageWithoutEffects.startsWith("wave:")) {
         effect = "wave";
-        setMessage(message.substring(5));
-      } else if (message.startsWith("wave2:")) {
+      } else if (messageWithoutEffects.startsWith("wave2:")) {
         effect = "wave2";
-        setMessage(message.substring(6));
-      } else if (message.startsWith("shake:")) {
+      } else if (messageWithoutEffects.startsWith("shake:")) {
         effect = "shake";
-        setMessage(message.substring(6));
-      } else if (message.startsWith("slide:")) {
+      } else if (messageWithoutEffects.startsWith("slide:")) {
         effect = "slide";
-        setMessage(message.substring(6));
-      } else if (message.startsWith("scroll:")) {
+      } else if (messageWithoutEffects.startsWith("scroll:")) {
         effect = "scroll";
-        setMessage(message.substring(7));
       } else {
         effect = "none";
       }
@@ -159,6 +159,19 @@ function App() {
       return totalHeight;
     };
 
+    const renderMessageContent = (msg) => {
+      // If the text effect is 'wave', split the message into individual characters
+      if (msg.textEffect === 'wave') {
+        return msg.message.split('').map((char, index) => (
+          <span key={index} className={`char${index + 1}`}>
+            {char}
+          </span>
+        ));
+      }
+      // Otherwise, just return the message as normal text
+      return msg.message;
+    };
+
     return (
         <div className="App">
             {!loggedIn ? (
@@ -182,7 +195,7 @@ function App() {
                         {messages.map((msg, index) => (
                             <div key={index} className="chat-message" ref={index === messages.length - 1 ? messageRef : null}>
                                 <div className="system-text">{msg.username}: </div>
-                                <div>{msg.message}</div>
+                                <div className={`message ${msg.colorEffect} ${msg.textEffect}`}>{renderMessageContent(msg)}</div>
                             </div>
                         ))}
                     </div>

@@ -1,8 +1,9 @@
-import "./App.css";
+import "./App.scss";
 import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
 const socket = io("https://runescape-party-chat-backend.onrender.com/");
+//const socket = io('localhost:3001');
 
 function CentralChatDisplay() {
   const [messages, setMessages] = useState([]);
@@ -18,6 +19,7 @@ function CentralChatDisplay() {
 
     socket.off("chat-message");
     socket.on("chat-message", (newMessage) => {
+      console.log(newMessage.message + " " + newMessage.textEffect + " " + newMessage.colorEffect);
       // Check if the message with the same id exists in the array
       const index = messageBuffer.current.findIndex(
         (msg) => msg.id === newMessage.id
@@ -95,6 +97,19 @@ function CentralChatDisplay() {
     }
   }, [messages]);
 
+  const renderMessageContent = (msg) => {
+    // If the text effect is 'wave', split the message into individual characters
+    if (msg.textEffect === 'wave') {
+      return msg.message.split('').map((char, index) => (
+        <span key={index} className={`char${index + 1}`}>
+          {char}
+        </span>
+      ));
+    }
+    // Otherwise, just return the message as normal text
+    return msg.message;
+  };
+
   return (
     <div className="chat-container">
       <div className="chat-top"/>
@@ -102,7 +117,7 @@ function CentralChatDisplay() {
         {messages.map((msg, index) => (
           <div key={index} className="chat-message">
             <div className="system-text">{msg.username}: </div>
-            <div className="message">{msg.message}</div>
+            <div className={`message ${msg.colorEffect} ${msg.textEffect}`}>{renderMessageContent(msg)}</div>
           </div>
         ))}
       </div>
