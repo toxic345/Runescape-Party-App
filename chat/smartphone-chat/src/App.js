@@ -48,10 +48,10 @@ function App() {
 
     const sendMessage = () => {
         if (message.trim()) {
-          const colorEffect = checkColorEffect();
-          const textEffect = checkTextEffect();
-
-          const chatMessage = { username, message, colorEffect, textEffect};
+          /*const colorEffect = checkColorEffect();
+          const textEffect = checkTextEffect();*/
+            const chatMessage = { username, message };
+          //const chatMessage = { username, message, colorEffect, textEffect};
           socket.emit('chat-message', chatMessage);
           setMessage('');  // Clear the input after sending
         }
@@ -182,7 +182,7 @@ function App() {
                         {messages.map((msg, index) => (
                             <div key={index} className="chat-message" ref={index === messages.length - 1 ? messageRef : null}>
                                 <div className="system-text">{msg.username}: </div>
-                                <div className={"message " + msg.colorEffect + " " + msg.textEffect}>{msg.message}</div>
+                                <div>{msg.message}</div>
                             </div>
                         ))}
                     </div>
