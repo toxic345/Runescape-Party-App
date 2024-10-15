@@ -48,11 +48,76 @@ function App() {
 
     const sendMessage = () => {
         if (message.trim()) {
-          const chatMessage = { username, message };
+          const colorEffect = checkColorEffect();
+          const textEffect = checkTextEffect();
+
+          const chatMessage = { username, message, colorEffect, textEffect};
           socket.emit('chat-message', chatMessage);
           setMessage('');  // Clear the input after sending
         }
     };
+
+    const checkColorEffect = () => {
+
+      var effect = "None";
+      if (message.startsWith("red:")) {
+        effect = "red";
+        setMessage(message.substring(4));
+      } else if (message.startsWith("yellow:")) {
+        effect = "yellow";
+        setMessage(message.substring(7));
+      } else if (message.startsWith("green:")) {
+        effect = "green";
+        setMessage(message.substring(6));
+      } else if (message.startsWith("cyan:")) {
+        effect = "cyan";
+        setMessage(message.substring(5));
+      } else if (message.startsWith("purple:")) {
+        effect = "purple";
+        setMessage(message.substring(7));
+      } else if (message.startsWith("white:")) {
+        effect = "white";
+        setMessage(message.substring(6));
+      } else if (message.startsWith("flash1:")) {
+        effect = "flash1";
+        setMessage(message.substring(7));
+      } else if (message.startsWith("flash2:")) {
+        effect = "flash2";
+        setMessage(message.substring(7));
+      } else if (message.startsWith("flash3:")) {
+        effect = "flash3";
+        setMessage(message.substring(7));
+      } else {
+        effect = "none";
+      }
+
+      return effect;
+    };
+
+    const checkTextEffect = () => {
+
+      var effect;
+      if (message.startsWith("wave:")) {
+        effect = "wave";
+        setMessage(message.substring(5));
+      } else if (message.startsWith("wave2:")) {
+        effect = "wave2";
+        setMessage(message.substring(6));
+      } else if (message.startsWith("shake:")) {
+        effect = "shake";
+        setMessage(message.substring(6));
+      } else if (message.startsWith("slide:")) {
+        effect = "slide";
+        setMessage(message.substring(6));
+      } else if (message.startsWith("scroll:")) {
+        effect = "scroll";
+        setMessage(message.substring(7));
+      } else {
+        effect = "none";
+      }
+
+      return effect;
+    }
 
     const handleLogin = () => {
       if (validateUsername()) {
@@ -117,7 +182,7 @@ function App() {
                         {messages.map((msg, index) => (
                             <div key={index} className="chat-message" ref={index === messages.length - 1 ? messageRef : null}>
                                 <div className="system-text">{msg.username}: </div>
-                                <div>{msg.message}</div>
+                                <div className={"message " + msg.colorEffect + " " + msg.textEffect}>{msg.message}</div>
                             </div>
                         ))}
                     </div>
