@@ -103,7 +103,7 @@ function CentralChatDisplay() {
         {messages.map((msg, index) => (
           <div key={index} className="chat-message">
             <div className="system-text">{msg.username}: </div>
-            <div>{msg.message}</div>
+            <div className="message">{msg.message}</div>
           </div>
         ))}
       </div>
