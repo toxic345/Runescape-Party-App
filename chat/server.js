@@ -35,14 +35,14 @@ const Message = sequelize.define('Message', {
         type: DataTypes.TEXT,
         allowNull: false,
     },
-    colorEffect: {
+    /*colorEffect: {
         type: DataTypes.TEXT,
         allowNull: false,
     },
     textEffect: {
         type: DataTypes.TEXT,
         allowNull: false,
-    },
+    },*/
     createdAt: {  // Timestamp when the message was created
         type: DataTypes.DATE,
         allowNull: false,
@@ -83,8 +83,8 @@ io.on('connection', async (socket) => {
             const newMessage = await Message.create({
                 username: data.username,
                 message: data.message,
-                colorEffect: data.colorEffect,
-                textEffect: data.textEffect
+                /*colorEffect: data.colorEffect,
+                textEffect: data.textEffect*/
             });
 
             // Broadcast the new message to all connected clients
