@@ -70,6 +70,19 @@ p {
 
 .system-text {
   color: #000000;
+  display: flex;
+  align-items: center;
+}
+
+.chat-badge {
+  width: 5vh;
+  height: 5vh;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.username {
+  display: inline-block;
 }
 
 /* Chat container takes the full screen height */

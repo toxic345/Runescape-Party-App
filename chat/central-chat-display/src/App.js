@@ -2,8 +2,8 @@ import "./App.scss";
 import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
-const socket = io("https://runescape-party-chat-backend.onrender.com/");
-//const socket = io('localhost:3001');
+//const socket = io("https://runescape-party-chat-backend.onrender.com/");
+const socket = io('localhost:3001');
 
 function CentralChatDisplay() {
   const [messages, setMessages] = useState([]);
@@ -116,7 +116,15 @@ function CentralChatDisplay() {
       <div className="chat-messages" id="chat-box" ref={chatBoxRef}>
         {messages.map((msg, index) => (
           <div key={index} className="chat-message">
-            <div className="system-text">{msg.username}: </div>
+            <div className="system-text">
+              {msg.badge && (
+                <img
+                  src={msg.badge}
+                  className="chat-badge"
+                />
+              )}
+              <span className="username">{msg.username}: </span>
+            </div>
             <div className={`message ${msg.colorEffect} ${msg.textEffect}`}>{renderMessageContent(msg)}</div>
           </div>
         ))}

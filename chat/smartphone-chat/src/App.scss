@@ -66,6 +66,19 @@ html, body {
 
 .system-text {
   color: #000000;
+  display: flex;
+  align-items: center;
+}
+
+.chat-badge {
+  width: 1.5vh;
+  height: 1.5vh;
+  margin-right: 10px;
+  display: inline-block;
+}
+
+.username {
+  display: inline-block;
 }
 
 /* Chat container takes the full screen height */
