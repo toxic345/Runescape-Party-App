@@ -72,3 +72,5 @@ The Drinking Counter App is a lightweight, RuneScape-themed application designed
 ## Clearing the DB
 - Invoke-WebRequest -Uri http://localhost:3001/clear-messages -Method DELETE
 - Invoke-WebRequest -Uri http://localhost:3001/clear-users -Method DELETE
+- Invoke-WebRequest -Uri https://runescape-party-chat-backend.onrender.com/clear-messages -Method DELETE
+- Invoke-WebRequest -Uri https://runescape-party-chat-backend.onrender.com/clear-users -Method DELETE
