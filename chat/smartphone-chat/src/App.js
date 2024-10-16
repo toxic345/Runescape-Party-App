@@ -2,8 +2,8 @@ import './App.scss';
 import React, { useState, useEffect, useRef, Component } from 'react';
 import io from 'socket.io-client';
 
-//const socket = io('https://runescape-party-chat-backend.onrender.com/');  // Connect to backend
-const socket = io('localhost:3001');
+const socket = io('https://runescape-party-chat-backend.onrender.com/');  // Connect to backend
+//const socket = io('localhost:3001');
 
 // TODO Chat badges?
 function App() {
