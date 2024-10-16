@@ -166,7 +166,7 @@ function App() {
       return "/assets/Jagex_moderator_emblem.png";
     }
 
-    const djs = ["GgEzSakkeEzGg", "Bifi"];
+    const djs = ["AntEaterNunu", "Bifi"];
     if (djs.includes(username)) {
       return "/assets/Dj_chat_badge.png";
     }
