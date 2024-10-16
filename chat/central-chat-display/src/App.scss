@@ -81,7 +81,7 @@ p {
   display: inline-block;
 }
 
-.username {
+.input-username {
   display: inline-block;
 }
 
@@ -147,7 +147,8 @@ p {
 }
 
 #input-message {
-  margin: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   overflow-wrap: break-word;
   display: flex;
   white-space: pre-wrap;

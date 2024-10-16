@@ -1,11 +1,10 @@
 import './App.scss';
-import React, { useState, useEffect, useRef, Component } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
 const socket = io('https://runescape-party-chat-backend.onrender.com/');  // Connect to backend
 //const socket = io('localhost:3001');
 
-// TODO Chat badges?
 function App() {
   const [username, setUsername] = useState('');
   const [ironmanType, setIronmanType] = useState('normal'); // 'normal' , 'iron', or 'hardcore'
@@ -32,6 +31,13 @@ function App() {
 
       socket.on('log-in-failed', () => {
         setError('Username ' + username + ' already taken.');
+      });
+
+      socket.on('remove-badge', (usernameToDeleteBadge) => {
+        console.log("Removing badge for user: " + usernameToDeleteBadge + ", current user: " + username);
+        if (usernameToDeleteBadge.toLowerCase() === username.toLowerCase()) {
+          setBadge(null);
+        }
       });
 
       socket.off('chat-message');
@@ -139,9 +145,6 @@ function App() {
 
   const handleLogin = () => {
     if (validateUsername()) {
-
-      
-
       const badgeValue = checkBadge();
       console.log("User " + username + " logged in with badge: " + badgeValue);
       const user = { username, badge: badgeValue };
@@ -266,16 +269,19 @@ function App() {
                   <div className="chat-messages" id="chat-box" ref={chatBoxRef}>
                       {messages.map((msg, index) => (
                           <div key={index} className="chat-message" ref={index === messages.length - 1 ? messageRef : null}>
-                              <div className="system-text">
-                                {msg.badge && (
-                                  <img
-                                    src={msg.badge}
-                                    className="chat-badge"
-                                  />
-                                )}
-                                <span className="username">{msg.username}: </span>
-                              </div>
-                              <div className={`message ${msg.colorEffect} ${msg.textEffect}`}>{renderMessageContent(msg)}</div>
+                              {msg.username !== "admin" && (
+                                <div className="system-text">
+                                  {msg.badge && (
+                                    <img
+                                      src={msg.badge}
+                                      alt=""
+                                      className="chat-badge"
+                                    />
+                                  )}
+                                  <span className="username">{msg.username}: </span>
+                                </div>
+                              )}
+                              <div className={(msg.username==="admin" ? `system-text` : `message ${msg.colorEffect} ${msg.textEffect}`)}>{renderMessageContent(msg)}</div>
                           </div>
                       ))}
                   </div>

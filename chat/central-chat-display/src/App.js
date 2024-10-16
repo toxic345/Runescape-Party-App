@@ -36,6 +36,7 @@ function CentralChatDisplay() {
       }
     });
 
+
     const interval = setInterval(() => {
       !processing.current && onProcessingMessage();
     }, 50);
@@ -49,9 +50,18 @@ function CentralChatDisplay() {
       const [currentMessage, ...rest] = messageBuffer.current;
       messageBuffer.current = rest;
 
-      document.getElementById("userName").innerHTML =
-        currentMessage.username + ": ";
-      document.getElementById("message").style = { color: "red" };
+      if (currentMessage.username ==="admin") {
+          document.getElementById("input-badge").removeAttribute("src");
+          document.getElementById("input-badge").style.display = "none";
+          document.getElementById("input-username").style.display = "none";
+          document.getElementById("message").classList.add("system-text");
+      } else {
+        if (currentMessage.badge) {
+          document.getElementById("input-badge").setAttribute("src", currentMessage.badge);
+          document.getElementById("input-badge").style.display = "inline";
+        }
+        document.getElementById("input-username").innerHTML = currentMessage.username + ": ";
+      }
 
       typeWriter(0, currentMessage);
       processing.current = true;
@@ -69,8 +79,13 @@ function CentralChatDisplay() {
     } else {
       processing.current = false;
 
-      document.getElementById("userName").innerHTML = "Username: ";
+
+      document.getElementById("input-username").innerHTML = "Username: ";
+      document.getElementById("input-username").style.display = "block";
+      document.getElementById("input-badge").style.display = "none";
+      document.getElementById("input-badge").setAttribute("src", "");
       document.getElementById("message").innerHTML = "";
+      document.getElementById("message").classList.remove("system-text");
 
       setMessages((prevMessages) => {
         // Check if the message with the same id exists in the array
@@ -116,23 +131,27 @@ function CentralChatDisplay() {
       <div className="chat-messages" id="chat-box" ref={chatBoxRef}>
         {messages.map((msg, index) => (
           <div key={index} className="chat-message">
-            <div className="system-text">
-              {msg.badge && (
-                <img
-                  src={msg.badge}
-                  className="chat-badge"
-                />
-              )}
-              <span className="username">{msg.username}: </span>
-            </div>
-            <div className={`message ${msg.colorEffect} ${msg.textEffect}`}>{renderMessageContent(msg)}</div>
+            {msg.username !== "admin" && (
+              <div className="system-text">
+                {msg.badge && (
+                  <img
+                    src={msg.badge}
+                    alt=""
+                    className="chat-badge"
+                  />
+                )}
+                <span className="username">{msg.username}: </span>
+              </div>
+            )}
+            <div className={(msg.username==="admin" ? `system-text` : `message ${msg.colorEffect} ${msg.textEffect}`)}>{renderMessageContent(msg)}</div>
           </div>
         ))}
       </div>
       <div className="chat-input-container">
         <div id="input-message">
-          <div className="system-text" id="userName">
-            Username:{" "}
+          <div className="system-text">
+            <img id="input-badge" style={{display : "none"}} alt="" className="chat-badge"/>
+            <span id="input-username" className="username">Username: </span>
           </div>
           <div id="message"></div>
         </div>
