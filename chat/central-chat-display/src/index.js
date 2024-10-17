@@ -8,5 +8,5 @@ const root = ReactDOM.createRoot(document.getElementById('root')); // Create roo
 root.render(
   <BrowserRouter>
     <Main />
-  <BrowserRouter>
+  </BrowserRouter>
 );
