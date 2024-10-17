@@ -6,7 +6,9 @@ import Main from './Main';
 
 const root = ReactDOM.createRoot(document.getElementById('root')); // Create root
 root.render(
-  <BrowserRouter>
-    <Main />
-  </BrowserRouter>
+  <React.StrictMode>
+    <BrowserRouter>
+      <Main />
+    </BrowserRouter>
+  </React.StrictMode>
 );
