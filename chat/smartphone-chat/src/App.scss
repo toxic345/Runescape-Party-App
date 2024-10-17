@@ -62,6 +62,7 @@ html, body {
   color: #0000FF;
   font-size: 3vh;
   /*background-color: #3E3529;*/
+  overflow-x: hidden; /* prevent horizontal scrolling */
 }
 
 .system-text {
@@ -86,6 +87,7 @@ html, body {
   display: flex;
   flex-direction: column;
   padding-bottom: 60px;
+  max-width: 100%;
   height: 100vh; /* Full viewport height */
   width: 100vw; /* Full viewport width */
 }
@@ -116,6 +118,7 @@ html, body {
   overflow-wrap: break-word;
   display: flex;
   white-space: pre-wrap;
+  word-break: break-word;
   box-sizing: border-box;
 }
 
