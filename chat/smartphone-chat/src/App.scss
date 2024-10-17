@@ -100,6 +100,9 @@ html, body {
 /* Fixed chat input at the bottom */
 .chat-input-container {
   position: fixed;
+  bottom: 0; 
+  left: 0; 
+  right: 0;
   display: flex;
   padding: 10px;
   background-color: #e0e0e0;
