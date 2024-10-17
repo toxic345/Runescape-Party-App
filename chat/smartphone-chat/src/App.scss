@@ -85,6 +85,7 @@ html, body {
 .chat-container {
   display: flex;
   flex-direction: column;
+  padding-bottom: 60px;
   height: 100vh; /* Full viewport height */
   width: 100vw; /* Full viewport width */
 }
@@ -106,6 +107,7 @@ html, body {
   display: flex;
   padding: 10px;
   background-color: #e0e0e0;
+  z-index: 100;
 }
 
 .chat-message {
