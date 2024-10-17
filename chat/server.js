@@ -14,8 +14,9 @@ const io = socketIo(server, {
 });
 
 const corsOptions = {
-    origin: 'https://runescape-party-chat-central.onrender.com/',
-    optionsSuccessStatus: 200,
+    origin: 'https://runescape-party-chat-central.onrender.com', // Allow your frontend URL
+    methods: ['GET', 'POST', 'DELETE', 'PUT'], // Allow specific HTTP methods
+    credentials: true, // If you need to send cookies or authorization headers
 };
 app.use(cors(corsOptions));
 
