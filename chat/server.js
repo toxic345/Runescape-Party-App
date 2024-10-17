@@ -13,11 +13,11 @@ const io = socketIo(server, {
     },
 });
 
-app.use(cors());
 const corsOptions = {
     origin: 'https://runescape-party-chat-central.onrender.com/',
     optionsSuccessStatus: 200,
 };
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
