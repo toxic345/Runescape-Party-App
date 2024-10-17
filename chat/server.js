@@ -281,7 +281,7 @@ server.listen(PORT, async () => {
     try {
         const systemMessage = await Message.create({
             username: "admin",
-            message: "Welcome to our Runescape Birthday Chat!.",
+            message: "Welcome to our Runescape Birthday Chat!",
             colorEffect: "none",
             textEffect: "none",
             badge: null
