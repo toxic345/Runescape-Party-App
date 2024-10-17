@@ -99,6 +99,7 @@ html, body {
 
 /* Fixed chat input at the bottom */
 .chat-input-container {
+  position: fixed;
   display: flex;
   padding: 10px;
   background-color: #e0e0e0;
