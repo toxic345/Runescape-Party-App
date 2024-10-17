@@ -16,6 +16,9 @@ const io = socketIo(server, {
 app.use(cors());
 app.use(express.json());
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 // Initialize PostgreSQL connection using Sequelize
 const sequelize = new Sequelize(process.env.DATABASE_URL/*"postgresql://runescape_party_chat_db_user:1j7rvnCJfIgBVw8hgwnlpjEfy3M4av3O@dpg-cs6qd408fa8c7390j37g-a.frankfurt-postgres.render.com/runescape_party_chat_db"*/, {
     dialect: 'postgres',
@@ -75,6 +78,11 @@ sequelize.sync({ alter: true }).then(() => {
     console.log('Database schema updated successfully.');
 }).catch((err) => {
     console.error('Error syncing database:', err);
+});
+
+// Handle client-side routes, send all non-API routes to index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
 // Endpoint to get chat logs
