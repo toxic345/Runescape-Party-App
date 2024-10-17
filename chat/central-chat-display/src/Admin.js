@@ -150,6 +150,7 @@ function Admin() {
                 <input
                     type="text"
                     value={systemMessage}
+                    maxLength="80" 
                     onChange={(e) => setSystemMessage(e.target.value)}
                     placeholder="Enter message"
                 />
