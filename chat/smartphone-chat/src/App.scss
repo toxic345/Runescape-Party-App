@@ -98,6 +98,9 @@ html, body {
   overflow-y: auto; /* Makes this section scrollable */
   padding: 10px;
   box-sizing: border-box;
+  max-width: 100%; 
+  width: 100%; 
+  overflow-x: hidden;
 }
 
 /* Fixed chat input at the bottom */
