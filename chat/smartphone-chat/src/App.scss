@@ -54,6 +54,13 @@
   font-style: normal;*/
 }
 
+@font-face {
+  font-family: 'Runescape-chat-bold';
+  src: url('../../assets/fonts/runescape_chat_bold.woff') format('woff');
+  /*font-weight: normal;
+  font-style: normal;*/
+}
+
 /* Ensure the whole chat area uses the available screen space */
 html, body {
   height: 100%;
@@ -63,6 +70,122 @@ html, body {
   font-size: 3vh;
   /*background-color: #3E3529;*/
   overflow-x: hidden; /* prevent horizontal scrolling */
+}
+
+#login-error {
+  padding: 0px;
+  margin: 0px;
+}
+
+.login-screen-container {
+  background-image: url('../../assets//login-page-empty-cropped.png'); /* Path to your image */
+  background-size: contain; /* Scale the image to fit the container while maintaining aspect ratio */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent repeating the image */
+  background-color:#000000;
+  position: relative;
+  height: 100vh; /* Full height of the viewport */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Prevents any overflow from affecting the layout */
+}
+
+.login-screen {
+  font-family: 'Runescape-chat-bold', sans-serif;
+  display: flex; /* Use flexbox for centering */
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center; /* Center elements horizontally */
+  justify-content: center; /* Center elements vertically */
+  color: #FFFF00; /* Text color to contrast with the background */
+  text-shadow: 1px 1px 0px rgba(0, 0, 0, 1);
+  position: relative;
+  top: 3vw; /* Adjust this value to move the badge slightly upwards */
+  padding: 2vh;
+  width: auto; /* Maintain size relative to content */
+}
+
+.login-screen h2 {
+  font-size: 4vw;
+  margin: 1vw;
+}
+
+.ironman-selection {
+  white-space: nowrap;
+  color: #FFFFFF;
+  margin-top: 1vw;
+}
+
+.ironman-selection input {
+  font-size: 3vw; /* Adjust font size relative to viewport height */
+  height: 75%; /* Set a relative width */
+  background-color: #584B3C;
+}
+
+.ironman-selection input[type='radio'] {
+  accent-color: #5DA556;
+  background-color: #4E422F;
+}
+
+.login-screen .ironman-selection label {
+  font-size: 4vw; /* Adjust font size for labels */
+  margin-right: 1vw; /* Spacing between radio buttons */
+}
+
+.login-screen button {
+  padding: 1vh 2vw; /* Button padding relative to viewport */
+  font-size: 2.5vw; /* Button text size */
+  //cursor: pointer; /* Change cursor on hover */
+  //background-color: rgba(255, 255, 255, 0.8); /* Light background for contrast */
+  //border: none; /* Remove default button border */
+  //border-radius: 4px; /* Rounded corners */
+  background-image: url('../../assets//login-button.png'); /* Path to your image */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent repeating the image */
+  background-size: 100% 100%;
+  width: 35vw;
+  height: 11vw;
+  margin-top: 4vw;
+}
+
+.username-container {
+  display: flex; /* Use flexbox for horizontal alignment */
+  align-items: center; /* Center align items vertically */
+  margin-left: 14vw;
+  margin-top: 2vw;
+}
+
+.username-container h2 {
+  margin: 0; /* Remove margin to align with input box */
+  font-size: 4vw; /* Adjust font size */
+  margin-right: 1vw; /* Space between text and input box */
+  color: #FFFFFF; 
+}
+
+.username-container input {
+  padding: 1vw; /* Padding relative to viewport */
+  width: 40%; /* Set a relative width for the input box */
+  font-size: 3vw; /* Adjust font size relative to viewport height */
+  background-color: #4A4C57;
+  color:#ffffff;
+}
+
+/* Error message style */
+#login-error {
+  position: absolute;
+  bottom: -30vh; /* Stay within the screen, avoid white space */
+  left: 50%;
+  font-size: 3vh;
+  transform: translateX(-50%);
+  color: red;
+  visibility: hidden;
+  width: 100%; /* Full width, but doesn't affect layout */
+  text-align: center;
+  pointer-events: none;
+}
+
+#login-error.show {
+  visibility: visible;
 }
 
 .system-text {

@@ -244,51 +244,57 @@ function App() {
   return (
       <div className="App">
           {!loggedIn ? (
-              <div>
-                  <h2>Enter Your Username</h2>
+            <div className="login-screen-container">
+              <div className="login-screen">
+                <h2>Welcome to Runescape</h2>
+                <div className="username-container">
+                  <h2>Username:</h2>
                   <input
-                      type="text"
-                      maxLength="12"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      onKeyUp={(e) => {
-                        if (e.key === 'Enter') handleLogin(true);
-                      }}
+                    type="text"
+                    maxLength="12"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    onKeyUp={(e) => {
+                      if (e.key === 'Enter') handleLogin(true);
+                    }}
                   />
-                  {error && <p style={{ color: 'red' }}>{error}</p>}
-
-                  <div className="ironman-selection">
-                    <label>
-                      <input
-                        type="radio"
-                        value="normal"
-                        checked={ironmanType === 'normal'}
-                        onChange={() => setIronmanType('normal')}
-                      />
-                      Normal
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        value="iron"
-                        checked={ironmanType === 'iron'}
-                        onChange={() => setIronmanType('iron')}
-                      />
-                      Ironman
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        value="hardcore"
-                        checked={ironmanType === 'hardcore'}
-                        onChange={() => setIronmanType('hardcore')}
-                      />
-                      Hardcore Ironman
-                    </label>
-                  </div>
-
-                  <button onClick={handleLogin}>Join Chat</button>
+                </div>
+                <div className="ironman-selection">
+                  <label>
+                    <input
+                      type="radio"
+                      value="normal"
+                      checked={ironmanType === 'normal'}
+                      onChange={() => setIronmanType('normal')}
+                    />
+                    Normal
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      value="iron"
+                      checked={ironmanType === 'iron'}
+                      onChange={() => setIronmanType('iron')}
+                    />
+                    Ironman
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      value="hardcore"
+                      checked={ironmanType === 'hardcore'}
+                      onChange={() => setIronmanType('hardcore')}
+                    />
+                    Hardcore Ironman
+                  </label>
+                </div>
+                <button onClick={handleLogin}></button>
+                {/* Error message with a reserved space */}
+                <p id="login-error" className={error ? "show" : ""}>
+                  {error}
+                </p>
               </div>
+            </div>
           ) : (
               <div className="chat-container">
                   <div className="chat-messages" id="chat-box" ref={chatBoxRef}>

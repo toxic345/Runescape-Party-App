@@ -1,3 +1,4 @@
+import './Admin.scss';
 import React, { useState, useEffect } from 'react';
 import io from "socket.io-client";
 import { useNavigate } from 'react-router-dom';
@@ -141,57 +142,59 @@ function Admin() {
         document.body.removeChild(link);
     };
 
-    return (
-        <div>
-            <h1>Admin Page</h1>
 
-            <div>
-                <h3 style={{"font-size" : "3vh"}}>Send system message</h3>
+    return (
+        <div className="admin-page">
+            <h2 className="admin-title">Admin Page</h2>
+            
+            <div className="message-section">
+                <h3 className="section-title">Send System Message</h3>
                 <input
                     type="text"
                     value={systemMessage}
                     maxLength="80" 
                     onChange={(e) => setSystemMessage(e.target.value)}
                     placeholder="Enter message"
+                    className="input-message"
                 />
-                <button onClick={sendSystemMessage}>Send</button>
+                <button onClick={sendSystemMessage} className="button-send">Send</button>
             </div>
-
-            <div>
-                <button onClick={clearMessages}>Clear Messages</button>
+    
+            <div className="action-section">
+                <h3 className="section-title">Clear DB tables</h3>
+                <button onClick={clearMessages} className="button-action">Clear Messages</button>
+                <button onClick={clearUsers} className="button-action">Clear Users</button>
             </div>
-
-            <div>
-                <button onClick={clearUsers}>Clear Users</button>
-            </div>
-
-            <div>
-                <h3 style={{"font-size" : "3vh"}}>Delete User by Username</h3>
+    
+            <div className="delete-user-section">
+                <h3 className="section-title">Delete User by Username</h3>
                 <input
-                type="text"
-                value={usernameToDelete}
-                onChange={(e) => setUsernameToDelete(e.target.value)}
-                placeholder="Enter username"
+                    type="text"
+                    value={usernameToDelete}
+                    onChange={(e) => setUsernameToDelete(e.target.value)}
+                    placeholder="Enter username"
+                    className="input-username"
                 />
-                <button onClick={deleteUserByUsername}>Delete User</button>
+                <button onClick={deleteUserByUsername} className="button-delete">Delete User</button>
             </div>
-
-            <div>
-                <h3 style={{"font-size" : "3vh"}}>Remove Badge from User</h3>
+    
+            <div className="remove-badge-section">
+                <h3 className="section-title">Remove Badge from User</h3>
                 <input
-                type="text"
-                value={usernameToDeleteBadge}
-                onChange={(e) => setUsernameToDeleteBadge(e.target.value)}
-                placeholder="Enter username"
+                    type="text"
+                    value={usernameToDeleteBadge}
+                    onChange={(e) => setUsernameToDeleteBadge(e.target.value)}
+                    placeholder="Enter username"
+                    className="input-username"
                 />
-                <button onClick={removeBadgeFromUser}>Remove Badge</button>
+                <button onClick={removeBadgeFromUser} className="button-remove-badge">Remove Badge</button>
             </div>
-
-
-            <div>
-                <button onClick={downloadChatLogs}>Download Chat Logs</button>
+    
+            <div className="download-section">
+                <button onClick={downloadChatLogs} className="button-download">Download Chat Logs</button>
             </div>
-            {feedback && <p style={{"font-size" : "3vh"}}>{feedback}</p>}
+    
+            {feedback && <p className="feedback-message">{feedback}</p>}
         </div>
     );
 }
