@@ -28,6 +28,7 @@ function App() {
         setUsername(user.username);
         setBadge(user.badge);
         setLoggedIn(true);
+        resetZoom();
       });
 
       socket.on('log-in-failed', () => {
@@ -79,6 +80,13 @@ function App() {
   useEffect(() => {
     scrollDown();
   }, [loggedIn]);
+
+  const resetZoom = () => {
+    const metaTag = document.querySelector('meta[name="viewport"]');
+    if (metaTag) {
+      metaTag.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+    }
+  };
 
   const sendMessage = () => {
       if (message.trim()) {

@@ -278,16 +278,15 @@ html, body {
 
 /* Fixed chat input at the bottom */
 .chat-input-container {
-  bottom: 0; 
-  left: 0; 
-  right: 0;
   display: flex;
+  align-items: center; /* Ensures proper alignment */
+  justify-content: space-between; /* Space between input and button */
+  position: sticky; /* Use sticky instead of fixed for mobile */
+  bottom: 0;
   padding: 8px;
-  z-index: 100;
-  box-sizing: border-box;
   background: #9e8a72; /* Dark stone-like background */
   border-top: 2px solid #28221C; /* Darker border for the top */
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5); /* Subtle shadow */
 }
 
 #message-input {
@@ -301,6 +300,7 @@ html, body {
   padding: 8px;
   outline: none;
   font-size: 3vh;
+  height: 3vh;
 }
 
 /* Focus state for the input to resemble RS-style */
