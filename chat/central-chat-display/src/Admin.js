@@ -126,7 +126,7 @@ function Admin() {
     const convertToCSV = (logs) => {
         const header = ['Timestamp', 'Username', 'Message', 'colorEffect', 'textEffect', 'badge'];
         const rows = logs.map(log => [log.timestamp, log.username, log.content, log.colorEffect, log.textEffect, log.badge]);
-        return [header, ...rows].map(e => e.join(",")).join("\n");
+        return [header, ...rows].map(e => e.join(";")).join("\n");
     };
 
     // Function to download CSV file
