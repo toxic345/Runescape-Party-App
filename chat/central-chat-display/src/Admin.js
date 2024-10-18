@@ -3,11 +3,11 @@ import io from "socket.io-client";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-//const url = "http://localhost:3001";
-const url = "https://runescape-party-chat-backend.onrender.com";
+const url = "http://localhost:3001";
+//const url = "https://runescape-party-chat-backend.onrender.com/";
 
-//const socket = io("localhost:3001");
-const socket = io("https://runescape-party-chat-backend.onrender.com/");
+const socket = io("localhost:3001");
+//const socket = io("https://runescape-party-chat-backend.onrender.com/");
 
 function Admin() {
     console.log('Admin Component Rendered');

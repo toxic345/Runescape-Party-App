@@ -2,8 +2,8 @@ import './App.scss';
 import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('https://runescape-party-chat-backend.onrender.com/');  // Connect to backend
-//const socket = io('localhost:3001');
+//const socket = io('https://runescape-party-chat-backend.onrender.com/');  // Connect to backend
+const socket = io('localhost:3001');
 
 function App() {
   const [username, setUsername] = useState('');
@@ -24,6 +24,7 @@ function App() {
       });
 
       socket.on('log-in', (user) => {
+        console.log('User logged in: username=' + user.username + ', badge=' + user.badge);
         setUsername(user.username);
         setBadge(user.badge);
         setLoggedIn(true);

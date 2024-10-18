@@ -23,7 +23,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Initialize PostgreSQL connection using Sequelize
-const sequelize = new Sequelize(process.env.DATABASE_URL/*"postgresql://runescape_party_chat_db_user:1j7rvnCJfIgBVw8hgwnlpjEfy3M4av3O@dpg-cs6qd408fa8c7390j37g-a.frankfurt-postgres.render.com/runescape_party_chat_db"*/, {
+const sequelize = new Sequelize(/*process.env.DATABASE_URL*/"postgresql://runescape_party_chat_db_user:1j7rvnCJfIgBVw8hgwnlpjEfy3M4av3O@dpg-cs6qd408fa8c7390j37g-a.frankfurt-postgres.render.com/runescape_party_chat_db", {
     dialect: 'postgres',
     protocol: 'postgres',
     logging: false, // Disable logging, remove or set to true to debug SQL queries

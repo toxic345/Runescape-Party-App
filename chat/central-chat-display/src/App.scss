@@ -292,7 +292,7 @@ $length: 50;
   @include wave($length);
 }
 
-@keyframes scroll {
+/*@keyframes scroll {
   0% {
     text-indent: 500px;
   }
@@ -306,7 +306,7 @@ $length: 50;
   white-space: nowrap;
   animation: scroll 8s infinite linear;
   overflow: hidden;
-}
+}*/
 
 @keyframes slide {
   0%{
@@ -322,7 +322,7 @@ $length: 50;
 }
 
 .slide {
-  animation: slide 3s linear;
+  animation: slide 3s infinite linear;
   position:relative;
   top: 0em;
 }
