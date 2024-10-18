@@ -2,8 +2,8 @@ import './App.scss';
 import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('https://runescape-party-chat-backend.onrender.com/');  // Connect to backend
-//const socket = io('localhost:3001');
+//const socket = io('https://runescape-party-chat-backend.onrender.com/');  // Connect to backend
+const socket = io('localhost:3001');
 
 function App() {
   const [username, setUsername] = useState('');
@@ -19,46 +19,61 @@ function App() {
   const usernameRegex = /^[a-zA-Z0-9- ]{1,12}$/;
 
   useEffect(() => {
-      socket.on('load-messages', (loadedMessages) => {
-          setMessages(loadedMessages);
-      });
 
-      socket.on('log-in', (user) => {
-        console.log('User logged in: username=' + user.username + ', badge=' + user.badge);
-        setUsername(user.username);
-        setBadge(user.badge);
-        setLoggedIn(true);
-        resetZoom();
-      });
+    socket.on('load-messages', (loadedMessages) => {
+        setMessages(loadedMessages);
 
-      socket.on('log-in-failed', () => {
-        setError('Username ' + username + ' already taken.');
-      });
+        const storedUsername = localStorage.getItem('username');
+        console.log('Found username in local storage: ' + storedUsername);
+        if (storedUsername) {
+          // Attempt to log in the user automatically using the stored username
+          socket.emit('log-in-existing', { username: storedUsername });
+        }
+    });
 
-      socket.off('chat-message');
-      socket.on('chat-message', (newMessage) => {
-        console.log(newMessage.message + " " + newMessage.textEffect + " " + newMessage.colorEffect);
-          setMessages((prevMessages) => {
-            // Check if the message with the same id exists in the array
-            const index = prevMessages.findIndex((msg) => msg.id === newMessage.id);
-    
-            if (index !== -1) {
-                // Update the existing message by creating a new array with the updated message
-                const updatedMessages = [...prevMessages];
-                updatedMessages[index] = newMessage;
-                return updatedMessages;
-            } else {
-                // If message doesn't exist, add it to the array
-                return [...prevMessages, newMessage];
-            }
-          });
+    socket.on('log-in', (user) => {
+      console.log('User logged in: username=' + user.username + ', badge=' + user.badge);
+      
+      // Store username and badge in localStorage when user logs in
+      localStorage.setItem('username', user.username);
+      
+      setUsername(user.username);
+      setBadge(user.badge);
+      if (user.badge === null ) {
+        setIronmanType('normal');
+      }
+      setLoggedIn(true);
+      resetZoom();
+    });
 
-          setTimeout(() => {
-            if (chatBoxRef.current && messageRef.current) {
-              chatBoxRef.current.scrollTop = Math.min(chatBoxRef.current.scrollHeight, chatBoxRef.current.scrollTop + getChatElementHeight());
-            }
-          }, 100); // Small delay to ensure the DOM is updated
-      });
+    socket.on('log-in-failed', () => {
+      setError('Username ' + username + ' already taken.');
+    });
+
+    socket.off('chat-message');
+    socket.on('chat-message', (newMessage) => {
+      console.log(newMessage.message + " " + newMessage.textEffect + " " + newMessage.colorEffect);
+        setMessages((prevMessages) => {
+          // Check if the message with the same id exists in the array
+          const index = prevMessages.findIndex((msg) => msg.id === newMessage.id);
+  
+          if (index !== -1) {
+              // Update the existing message by creating a new array with the updated message
+              const updatedMessages = [...prevMessages];
+              updatedMessages[index] = newMessage;
+              return updatedMessages;
+          } else {
+              // If message doesn't exist, add it to the array
+              return [...prevMessages, newMessage];
+          }
+        });
+
+        setTimeout(() => {
+          if (chatBoxRef.current && messageRef.current) {
+            chatBoxRef.current.scrollTop = Math.min(chatBoxRef.current.scrollHeight, chatBoxRef.current.scrollTop + getChatElementHeight());
+          }
+        }, 100); // Small delay to ensure the DOM is updated
+    });
   }, []);
   
   useEffect(() => {
@@ -166,6 +181,7 @@ function App() {
       const badgeValue = checkBadge();
       console.log("User " + username + " logged in with badge: " + badgeValue);
       const user = { username, badge: badgeValue };
+
       socket.emit('log-in', user);
     }
   };
@@ -188,6 +204,7 @@ function App() {
     }
 
     const djs = ["AntEaterNunu", "Bifi"];
+
     if (djs.includes(username)) {
       return "/assets/Dj_chat_badge.png";
     }
