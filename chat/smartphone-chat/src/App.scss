@@ -72,13 +72,18 @@ html, body {
   overflow-x: hidden; /* prevent horizontal scrolling */
 }
 
+.App {
+  overflow-x: hidden; /* prevent horizontal scrolling */
+  position: relative;
+}
+
 #login-error {
   padding: 0px;
   margin: 0px;
 }
 
 .login-screen-container {
-  background-image: url('../../assets//login-page-empty-cropped.png'); /* Path to your image */
+  background-image: url('../../assets/login-page-empty-cropped.png'); /* Path to your image */
   background-size: contain; /* Scale the image to fit the container while maintaining aspect ratio */
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Prevent repeating the image */
