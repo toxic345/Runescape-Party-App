@@ -197,7 +197,7 @@ function App() {
 
   const checkBadge = () => {
     
-    const admins = ["Epic Toxic", "Zezima", "I Trolled U2", "Fonsken1", "Nozmas", "GroteSpeler94", "Mod Proske", "Bram352"]
+    const admins = ["Epic Toxic", "Zezima", "I Trolled U2", "Fonsken1", "Nozmas", "GroteSpeler94", "Zevenen", "Quazerty"]
     
     if (admins.includes(username)) {
       return "/assets/Jagex_moderator_emblem.png";

@@ -63,7 +63,7 @@
 
 /* Ensure the whole chat area uses the available screen space */
 html, body {
-  height: 100svh;
+  height: 100dvh;
   margin: 0;
   font-family: 'Runescape-chat', sans-serif;
   color: #0000FF;
@@ -77,7 +77,7 @@ html, body {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 100svh; /* Ensure full height including mobile safe area */
+  min-height: 100dvh; /* Ensure full height including mobile safe area */
 
 }
 
@@ -93,7 +93,7 @@ html, body {
   background-repeat: no-repeat; /* Prevent repeating the image */
   background-color:#000000;
   position: relative;
-  height: 100vh; /* Full height of the viewport */
+  height: 100dvh; /* Full height of the viewport */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -225,8 +225,8 @@ html, body {
 .chat-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Full viewport height */
-  width: 100vw; /* Full viewport width */
+  height: 100dvh; /* Full viewport height */
+  width: 100dvw; /* Full viewport width */
   overflow: hidden;
   overflow-x: hidden; /* Prevents horizontal scrolling */
 }
