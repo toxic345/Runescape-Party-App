@@ -32,7 +32,7 @@
 }
 
 .button-send, .button-action, .button-delete, .button-remove-badge, .button-download {
-    background-color: #41752d; /* Primary button color */
+    background-color: #1d508a; /* Primary button color */
     color: white; /* Button text color */
     border: none; /* Remove default border */
     border-radius: 4px; /* Rounded corners */
@@ -44,7 +44,7 @@
 }
 
 .button-send:hover, .button-action:hover, .button-delete:hover, .button-remove-badge:hover, .button-download:hover {
-    background-color: #dcdf28; /* Darker shade on hover */
+    background-color: #4ca721; /* Darker shade on hover */
 }
 
 .feedback-message {
@@ -56,7 +56,7 @@
 }
 
 .message-section, .action-section, .delete-user-section, .remove-badge-section, .download-section {
-    background-color: #d4d899; /* White background for sections */
+    background-color: #85dad5; /* White background for sections */
     padding: 10px; /* Inner padding */
     border-radius: 6px; /* Rounded corners for sections */
     margin-bottom: 50px; /* Space between sections */
