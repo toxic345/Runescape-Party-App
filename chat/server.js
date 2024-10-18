@@ -254,6 +254,7 @@ io.on('connection', async (socket) => {
     
             // If the user exists, update their badge
             if (user) {
+                console.log('Existing user ' + data.username + ' found.');
                 socket.emit('log-in', user);
             }
         } catch (error) {
