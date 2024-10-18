@@ -254,7 +254,7 @@ html, body {
 
 .chat-message {
   margin: 0px;
-  padding:1px;
+  padding:0px;
   display: inline-flex; /* Keeps elements inline and in the same row */
   align-items: baseline; /* Aligns username and message to the same line */
   width: 100%; /* Ensure the message takes up available width */
