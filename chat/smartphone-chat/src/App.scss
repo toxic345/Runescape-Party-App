@@ -123,7 +123,30 @@ html, body {
 
 .ironman-selection input {
   font-size: 3vw; /* Adjust font size relative to viewport height */
-  height: 75%; /* Set a relative width */
+}
+
+.ironman-selection input[type='radio'] {
+  appearance: none; /* Remove default appearance */
+  width: 3vw; /* Define explicit width and height */
+  height: 3vw;
+  background-color: #5e4f39; /* Background for unchecked state */
+  border-radius: 50%; /* Makes it circular */
+  border: 1px solid #463b2a; /* Add border */
+  display: inline-block;
+  position: relative;
+  cursor: pointer; /* Add pointer cursor */
+}
+
+.ironman-selection input[type='radio']:checked::before {
+  content: '';
+  width: 2vw;
+  height: 2vw;
+  background-color: #FFFF00; /* Color for checked state */
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .login-screen .ironman-selection label {
