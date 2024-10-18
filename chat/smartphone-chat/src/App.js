@@ -2,8 +2,8 @@ import './App.scss';
 import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
-//const socket = io('https://runescape-party-chat-backend.onrender.com/');  // Connect to backend
-const socket = io('localhost:3001');
+const socket = io('https://runescape-party-chat-backend.onrender.com/');  // Connect to backend
+//const socket = io('localhost:3001');
 
 function App() {
   const [username, setUsername] = useState('');
@@ -34,13 +34,6 @@ function App() {
         setError('Username ' + username + ' already taken.');
       });
 
-      socket.on('remove-badge', (usernameToDeleteBadge) => {
-        console.log("Removing badge for user: " + usernameToDeleteBadge + ", current user: " + username);
-        if (usernameToDeleteBadge.toLowerCase() === username.toLowerCase()) {
-          setBadge(null);
-        }
-      });
-
       socket.off('chat-message');
       socket.on('chat-message', (newMessage) => {
         console.log(newMessage.message + " " + newMessage.textEffect + " " + newMessage.colorEffect);
@@ -66,6 +59,22 @@ function App() {
           }, 100); // Small delay to ensure the DOM is updated
       });
   }, []);
+  
+  useEffect(() => {
+    const handleRemoveBadge = (usernameToDeleteBadge) => {
+        console.log("Removing badge for user: " + usernameToDeleteBadge + ", current user: " + username);
+        if (usernameToDeleteBadge.toLowerCase() === username.toLowerCase()) {
+            setBadge(null);
+        }
+    };
+
+    socket.on('remove-badge', handleRemoveBadge);
+
+    // Clean up event listener when username changes or component unmounts
+    return () => {
+        socket.off('remove-badge', handleRemoveBadge);
+    };
+  }, [username]);
 
   useEffect(() => {
     scrollDown();
@@ -133,9 +142,9 @@ function App() {
       effect = "wave2";
     } else if (message.startsWith("shake:")) {
       effect = "shake";
-    } else if (message.startsWith("slide:")) {
+    } /*else if (message.startsWith("slide:")) {
       effect = "slide";
-    } else if (message.startsWith("scroll:")) {
+    }*/ else if (message.startsWith("scroll:")) {
       effect = "scroll";
     } else {
       effect = "none";
@@ -207,14 +216,29 @@ function App() {
   const renderMessageContent = (msg) => {
     // If the text effect is 'wave', split the message into individual characters
     if (msg.textEffect === 'wave') {
-      return msg.message.split('').map((char, index) => (
-        <span key={index} className={`char${index + 1}`}>
-          {char}
-        </span>
-      ));
+        return (
+          <span className={msg.colorEffect}>
+            <span className={msg.textEffect}>
+              {
+                msg.message.split('').map((char, index) => (
+                  <span key={index} className={`char${index + 1}`}>
+                      {char}
+                  </span>
+                ))
+              }
+            </span>
+          </span>
+        );
+
     }
-    // Otherwise, just return the message as normal text
-    return msg.message;
+    // Otherwise, just return the message as normal text with animation classes
+    return (
+      <span className={msg.colorEffect}>
+        <span className={msg.textEffect}>
+          {msg.message}
+        </span>
+      </span>
+    );
   };
 
   return (
@@ -271,7 +295,7 @@ function App() {
                       {messages.map((msg, index) => (
                           <div key={index} className="chat-message" ref={index === messages.length - 1 ? messageRef : null}>
                               {msg.username !== "admin" && (
-                                <div className="system-text">
+                                <span className="system-text">
                                   {msg.badge && (
                                     <img
                                       src={msg.badge}
@@ -280,9 +304,11 @@ function App() {
                                     />
                                   )}
                                   <span className="username">{msg.username}: </span>
-                                </div>
+                                </span>
                               )}
-                              <div className={(msg.username==="admin" ? `system-text` : `message ${msg.colorEffect} ${msg.textEffect}`)}>{renderMessageContent(msg)}</div>
+                              <span className={msg.username === "admin" ? `system-text` : `message`}>
+                                {renderMessageContent(msg)}
+                              </span>
                           </div>
                       ))}
                   </div>

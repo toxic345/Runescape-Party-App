@@ -2,8 +2,8 @@ import "./App.scss";
 import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
-//const socket = io("https://runescape-party-chat-backend.onrender.com/");
-const socket = io('localhost:3001');
+const socket = io("https://runescape-party-chat-backend.onrender.com/");
+//const socket = io('localhost:3001');
 
 function CentralChatDisplay() {
   const [messages, setMessages] = useState([]);
@@ -54,7 +54,7 @@ function CentralChatDisplay() {
           document.getElementById("input-badge").removeAttribute("src");
           document.getElementById("input-badge").style.display = "none";
           document.getElementById("input-username").style.display = "none";
-          document.getElementById("message").classList.add("system-text");
+          document.getElementById("input-message").classList.add("system-text");
       } else {
         if (currentMessage.badge) {
           document.getElementById("input-badge").setAttribute("src", currentMessage.badge);
@@ -70,7 +70,7 @@ function CentralChatDisplay() {
 
   const typeWriter = (index, currentMessage) => {
     if (index < currentMessage.message.length) {
-      document.getElementById("message").innerHTML +=
+      document.getElementById("input-message").innerHTML +=
         currentMessage.message.charAt(index);
 
       setTimeout(() => {
@@ -84,8 +84,8 @@ function CentralChatDisplay() {
       document.getElementById("input-username").style.display = "block";
       document.getElementById("input-badge").style.display = "none";
       document.getElementById("input-badge").setAttribute("src", "");
-      document.getElementById("message").innerHTML = "";
-      document.getElementById("message").classList.remove("system-text");
+      document.getElementById("input-message").innerHTML = "";
+      document.getElementById("input-message").classList.remove("system-text");
 
       setMessages((prevMessages) => {
         // Check if the message with the same id exists in the array
@@ -115,14 +115,29 @@ function CentralChatDisplay() {
   const renderMessageContent = (msg) => {
     // If the text effect is 'wave', split the message into individual characters
     if (msg.textEffect === 'wave') {
-      return msg.message.split('').map((char, index) => (
-        <span key={index} className={`char${index + 1}`}>
-          {char}
-        </span>
-      ));
+        return (
+          <span className={msg.colorEffect}>
+            <span className={msg.textEffect}>
+              {
+                msg.message.split('').map((char, index) => (
+                  <span key={index} className={`char${index + 1}`}>
+                      {char}
+                  </span>
+                ))
+              }
+            </span>
+          </span>
+        );
+
     }
-    // Otherwise, just return the message as normal text
-    return msg.message;
+    // Otherwise, just return the message as normal text with animation classes
+    return (
+      <span className={msg.colorEffect}>
+        <span className={msg.textEffect}>
+          {msg.message}
+        </span>
+      </span>
+    );
   };
 
   return (
@@ -132,7 +147,7 @@ function CentralChatDisplay() {
         {messages.map((msg, index) => (
           <div key={index} className="chat-message">
             {msg.username !== "admin" && (
-              <div className="system-text">
+              <span className="system-text">
                 {msg.badge && (
                   <img
                     src={msg.badge}
@@ -141,19 +156,21 @@ function CentralChatDisplay() {
                   />
                 )}
                 <span className="username">{msg.username}: </span>
-              </div>
+              </span>
             )}
-            <div className={(msg.username==="admin" ? `system-text` : `message ${msg.colorEffect} ${msg.textEffect}`)}>{renderMessageContent(msg)}</div>
+            <span className={msg.username === "admin" ? `system-text` : `message`}>
+              {renderMessageContent(msg)}
+            </span>
           </div>
         ))}
       </div>
       <div className="chat-input-container">
-        <div id="input-message">
-          <div className="system-text">
+        <div id="input-message-container">
+          <span className="system-text">
             <img id="input-badge" style={{display : "none"}} alt="" className="chat-badge"/>
             <span id="input-username" className="username">Username: </span>
-          </div>
-          <div id="message"></div>
+          </span>
+          <div id="input-message"></div>
         </div>
       </div>
     </div>
