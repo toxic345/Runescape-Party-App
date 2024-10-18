@@ -124,11 +124,6 @@ html, body {
 .ironman-selection input {
   font-size: 3vw; /* Adjust font size relative to viewport height */
   height: 75%; /* Set a relative width */
-  background-color: #584B3C;
-}
-
-.ironman-selection input[type='radio'] {
-  accent-color: #5DA556;
 }
 
 .login-screen .ironman-selection label {
@@ -143,7 +138,7 @@ html, body {
   //background-color: rgba(255, 255, 255, 0.8); /* Light background for contrast */
   //border: none; /* Remove default button border */
   //border-radius: 4px; /* Rounded corners */
-  background-image: url('../../assets//login-button.png'); /* Path to your image */
+  background-image: url('../../assets/login-button.png'); /* Path to your image */
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Prevent repeating the image */
   background-size: 100% 100%;
